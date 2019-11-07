@@ -1,9 +1,8 @@
 import React from 'react';
-import './PostItem.css'
 import moment from "moment";
+import './Post.css';
 
-class PostItem extends React.Component {
-
+class Post extends React.Component {
     render() {
         const {content, user, createDate, onDelete} = this.props;
         return (
@@ -30,4 +29,4 @@ class PostItem extends React.Component {
     }
 }
 
-export default PostItem;
+export default Post;

@@ -6,12 +6,13 @@ import PostAddForm from './PostAddForm/PostAddForm';
 import PostsList from './PostsList/PostsList';
 
 class App extends React.Component {
+    // Local post storage
+    localPosts = JSON.parse(localStorage.getItem('posts'));
 
-    local = JSON.parse(localStorage.getItem('posts'));
     state = {
-        posts: this.local ? this.local : []
+        posts: this.localPosts ? this.localPosts : []
     };
-    
+
     addPost = (text) => {
         const newPost = {
             id: uuid.v4(),
@@ -21,9 +22,7 @@ class App extends React.Component {
         };
 
         this.setState(({posts}) => {
-            // const arr= [...posts, newPost];
-            // const serArr= JSON.stringify([...posts, newPost]);
-            localStorage.setItem( 'posts', JSON.stringify([...posts, newPost]) );
+            localStorage.setItem('posts', JSON.stringify([...posts, newPost]));
 
             return {
                 posts: [...posts, newPost]
@@ -33,11 +32,10 @@ class App extends React.Component {
 
     deletePost = (id) => {
         this.setState( ({posts}) => {
-            const postArrIndex = posts.findIndex( (post) => post.id === id );
+            const postArrIndex = posts.findIndex((post) => post.id === id);
             posts.splice( postArrIndex, 1);
+            localStorage.setItem('posts', JSON.stringify(posts));
 
-            // const serArr2= JSON.stringify(posts);
-            localStorage.setItem( 'posts', JSON.stringify(posts) );
             return posts;
         });
     };
@@ -48,9 +46,12 @@ class App extends React.Component {
             <div className="container">
                 <AppHeader />
                 <PostAddForm
-                    onAddPost={this.addPost}/>
+                    onAddPost={this.addPost}
+                />
                 <PostsList
-                    posts={posts} onDelete={ (id) => this.deletePost(id) } />
+                    posts={posts}
+                    onDelete={(id) => this.deletePost(id)}
+                />
             </div>
         );
     }

@@ -12,13 +12,14 @@ class PostAddForm extends React.Component {
     };
     onFormSubmit = (e) => {
         e.preventDefault();
-        this.props.onAddPost(this.state.content);
-        this.setState({
-            content: ''
-        });
+        if (this.state.content) {
+            this.props.onAddPost(this.state.content);
+            this.setState({
+                content: ''
+            });
+        }
     };
     render() {
-        // const textareaId = uuid.v4();
         return (
             <form className="post-add-form"
                   onSubmit={this.onFormSubmit}>
