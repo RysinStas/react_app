@@ -8,16 +8,16 @@ const PostsList = ({ posts, onDelete }) => {
     const elements = posts.map( (post) => {
         const { ...postProps } = post;
         return (
-            <li className="list-group-item posts-list-item" key={ post.id }>
+            <div className="list-group-item posts-list-item" key={ post.id }>
                 <PostItem { ...postProps } onDelete={ () => onDelete( post.id ) } />
-            </li>
+            </div>
         );
     } );
 
     return (
-        <ul className="list-group posts-list">
+        <div className="list-group posts-list">
             { elements }
-        </ul>
+        </div>
     );
 };
 

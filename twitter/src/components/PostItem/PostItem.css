@@ -1,0 +1,28 @@
+.post-wrapper {
+    width: 95%;
+    display: inline-block;
+    text-align: left;
+}
+.post-buttons {
+    width: 5%;
+    overflow: auto;
+    display: inline-block;
+    text-align: right;
+}
+.post-info-user {
+    width: 50%;
+    display: inline-block;
+    text-align: left;
+}
+.post-info-date {
+    width: 50%;
+    display: inline-block;
+    text-align: right;
+}
+.post-info {
+    padding-top: 0.5em;
+    border-top: 1px solid rgba(0,0,0,.125);
+}
+.post-content {
+    overflow: auto;
+}

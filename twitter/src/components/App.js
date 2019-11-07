@@ -5,30 +5,13 @@ import AppHeader from './AppHeader/AppHeader';
 import PostAddForm from './PostAddForm/PostAddForm';
 import PostsList from './PostsList/PostsList';
 
-class App extends React.Component{
-    state = {
-        posts: [
-            {
-                id: uuid.v4(),
-                content: 'Some text1',
-                user: 'admin',
-                createDate: Date.now()
-            },
-            {
-                id: uuid.v4(),
-                content: 'Some text2',
-                user: 'admin',
-                createDate: Date.now()
-            },
-            {
-                id: uuid.v4(),
-                content: 'Some text3',
-                user: 'admin',
-                createDate: Date.now()
-            },
-        ]
-    };
+class App extends React.Component {
 
+    local = JSON.parse(localStorage.getItem('posts'));
+    state = {
+        posts: this.local ? this.local : []
+    };
+    
     addPost = (text) => {
         const newPost = {
             id: uuid.v4(),
@@ -38,6 +21,10 @@ class App extends React.Component{
         };
 
         this.setState(({posts}) => {
+            // const arr= [...posts, newPost];
+            // const serArr= JSON.stringify([...posts, newPost]);
+            localStorage.setItem( 'posts', JSON.stringify([...posts, newPost]) );
+
             return {
                 posts: [...posts, newPost]
             };
@@ -48,6 +35,9 @@ class App extends React.Component{
         this.setState( ({posts}) => {
             const postArrIndex = posts.findIndex( (post) => post.id === id );
             posts.splice( postArrIndex, 1);
+
+            // const serArr2= JSON.stringify(posts);
+            localStorage.setItem( 'posts', JSON.stringify(posts) );
             return posts;
         });
     };
