@@ -1,0 +1,6 @@
+.posts-list {
+    padding: .25rem .75rem;
+}
+.posts-list-item {
+    overflow: auto;
+}
