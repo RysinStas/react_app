@@ -1,15 +1,43 @@
 import React from 'react';
-import './PostAddForm.css'
 import styled from "styled-components";
 
 const Form = styled.form`
-    padding: .25rem .75rem;
+    padding: .25rem .75rem;   
 `;
-const PostAddButton = styled.div`
+const Textarea = styled.textarea`
+    overflow: auto;
+    resize: vertical;
+    width: 100%;   
+    padding: .375rem .75rem;
+    max-height: 20rem;
+    min-height: 3rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;    
+`;
+const ButtonWrapper = styled.div`
     padding: .75rem;
+    text-align: center;
 `;
 const Button = styled.button`
-    text-transform: capitalize;
+    display: inline-block;
+    padding: .375rem .75rem; 
+    color: #6c757d;
+    background-color: transparent; 
+    border: 1px solid #6c757d;      
+    border-radius: .25rem;
+    text-transform: capitalize; 
+    font-weight: 400;
+    vertical-align: middle; 
+    cursor: pointer;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    :hover {
+        color: #ffffff;
+        text-decoration: none;
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }    
 `;
 
 class PostAddForm extends React.Component {
@@ -34,18 +62,15 @@ class PostAddForm extends React.Component {
         return (
             <Form
                   onSubmit={this.onFormSubmit}>
-                <textarea
-                    className="form-control"
+                <Textarea
                     rows="5"
                     placeholder="Put your text here"
                     onChange={this.onTextChange}
                     value={this.state.content}>
-                </textarea>
-                <PostAddButton className="text-center post-add-button">
-                    <Button type="submit"
-                            className="btn btn-outline-secondary ">add post
-                    </Button>
-                </PostAddButton>
+                </Textarea>
+                <ButtonWrapper>
+                    <Button type="submit">add post</Button>
+                </ButtonWrapper>
             </Form>
         );
     }

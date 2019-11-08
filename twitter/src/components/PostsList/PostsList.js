@@ -1,22 +1,32 @@
 import React from "react";
+import styled from "styled-components";
 
 import Post from "../Post/Post";
-import './PostsList.css';
+
+const StyledList = styled.div `
+    padding: .25rem .75rem;
+`;
+const StyledListItem = styled.div `
+    margin-bottom: .25rem;
+    padding: .75rem 1.25rem;      
+    overflow: auto;  
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+`;
 
 const PostsList = ({ posts, onDelete }) => {
     const elements = posts.map( (post) => {
         const {...postProps} = post;
         return (
-            <div className="list-group-item posts-list-item" key={post.id}>
+            <StyledListItem key={post.id}>
                 <Post {...postProps} onDelete={ () => onDelete(post.id)} />
-            </div>
+            </StyledListItem>
         );
     } );
 
     return (
-        <div className="list-group posts-list">
-            {elements}
-        </div>
+        <StyledList>{elements}</StyledList>
     );
 };
 

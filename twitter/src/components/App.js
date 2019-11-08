@@ -4,6 +4,16 @@ import uuid from 'uuid';
 import AppHeader from './AppHeader/AppHeader';
 import PostAddForm from './PostAddForm/PostAddForm';
 import PostsList from './PostsList/PostsList';
+import styled from "styled-components";
+
+const Container = styled.div`
+    width: 100%;
+    max-width: 720px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+`;
 
 class App extends React.Component {
     // Local post storage
@@ -22,10 +32,10 @@ class App extends React.Component {
         };
 
         this.setState(({posts}) => {
-            localStorage.setItem('posts', JSON.stringify([...posts, newPost]));
+            localStorage.setItem('posts', JSON.stringify([newPost, ...posts]));
 
             return {
-                posts: [...posts, newPost]
+                posts: [newPost, ...posts ]
             };
         });
     };
@@ -43,7 +53,7 @@ class App extends React.Component {
     render() {
         const { posts } = this.state;
         return (
-            <div className="container">
+            <Container className="container">
                 <AppHeader />
                 <PostAddForm
                     onAddPost={this.addPost}
@@ -52,7 +62,7 @@ class App extends React.Component {
                     posts={posts}
                     onDelete={(id) => this.deletePost(id)}
                 />
-            </div>
+            </Container>
         );
     }
 }

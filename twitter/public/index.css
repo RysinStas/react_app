@@ -1,7 +1,13 @@
+*{
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+html{
+    font-size: 16px;
+}
 body {
     background-color: #f8f8ff;
 }
-
 #root {
     padding: 0.75rem;
 }
