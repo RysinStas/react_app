@@ -16,17 +16,16 @@ const StyledListItem = styled.div `
 `;
 
 const PostsList = ({ posts, onDelete }) => {
-    const elements = posts.map( (post) => {
-        const {...postProps} = post;
-        return (
-            <StyledListItem key={post.id}>
-                <Post {...postProps} onDelete={ () => onDelete(post.id)} />
-            </StyledListItem>
-        );
-    } );
-
     return (
-        <StyledList>{elements}</StyledList>
+        <StyledList>{ posts.map( (post) => {
+            const {...postProps} = post;
+            return (
+                <StyledListItem key={post.id}>
+                    <Post {...postProps} onDelete={ () => onDelete(post.id)} />
+                </StyledListItem>
+            );
+        } ) }
+        </StyledList>
     );
 };
 

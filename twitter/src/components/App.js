@@ -31,23 +31,27 @@ class App extends React.Component {
             createDate: Date.now()
         };
 
-        this.setState(({posts}) => {
+        this.setState((state) => {
+            const {posts} = state;
             localStorage.setItem('posts', JSON.stringify([newPost, ...posts]));
 
             return {
                 posts: [newPost, ...posts ]
             };
         });
+        console.log(this.state);
     };
 
     deletePost = (id) => {
         this.setState( ({posts}) => {
+
             const postArrIndex = posts.findIndex((post) => post.id === id);
             posts.splice( postArrIndex, 1);
             localStorage.setItem('posts', JSON.stringify(posts));
 
             return posts;
         });
+
     };
 
     render() {

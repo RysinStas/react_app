@@ -4,6 +4,7 @@ import styled from "styled-components";
 const Form = styled.form`
     padding: .25rem .75rem;   
 `;
+
 const Textarea = styled.textarea`
     overflow: auto;
     resize: vertical;
@@ -16,10 +17,12 @@ const Textarea = styled.textarea`
     border: 1px solid #ced4da;
     border-radius: .25rem;    
 `;
+
 const ButtonWrapper = styled.div`
     padding: .75rem;
     text-align: center;
 `;
+
 const Button = styled.button`
     display: inline-block;
     padding: .375rem .75rem; 

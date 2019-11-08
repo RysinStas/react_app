@@ -8,33 +8,39 @@ const PostWrapper = styled.div`
     display: inline-block;
     text-align: left;
 `;
+
 const PostInfo = styled.div`
     padding-top: 0.5rem;
     border-top: 1px solid rgba(0, 0, 0, 0.125);
     font-size: small;
     color: #708090;
 `;
+
 const PostContent = styled.div`
     overflow: auto;
     max-height: 500px;
     line-height: 1.5rem;
 `;
+
 const PostInfoUser = styled.div`
     width: 50%;
     display: inline-block;
     text-align: left;
 `;
+
 const PostInfoDate = styled.div`
     width: 50%;
     display: inline-block;
     text-align: right;
 `;
+
 const PostButtonsBlock = styled.div`
     width: 5%;
     overflow: auto;
     display: inline-block;
     text-align: right;
 `;
+
 const Button = styled.button`
     display: inline-block;
     padding: .15rem  
@@ -54,6 +60,7 @@ const Button = styled.button`
         // border-color: #6c757d;
     }    
 `;
+
 class Post extends React.Component {
 
     render() {
@@ -71,13 +78,10 @@ class Post extends React.Component {
                 </PostWrapper>
                 <PostButtonsBlock>
                     <Button type="button"
-                            //className="btn btn-outline-danger btn-sm"
                             onClick={onDelete}>
                         <FaTrashAlt/>
-                        {/*<i className="fa fa-trash-o"/>*/}
                     </Button>
                 </PostButtonsBlock>
-
             </article>
         );
     }
