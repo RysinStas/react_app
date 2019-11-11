@@ -12,49 +12,67 @@ const Container = styled.div`
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
-    margin-left: auto;
+    margin-left: auto;  
 `;
 
 class App extends React.Component {
-    // Local post storage
-    localPosts = JSON.parse(localStorage.getItem('posts'));
 
     state = {
-        posts: this.localPosts ? this.localPosts : []
+        posts: []
     };
+
+    componentDidMount() {
+        const posts = JSON.parse(localStorage.getItem('posts')) ;
+        if (posts) {
+            this.setState({posts});
+        }
+    }
 
     addPost = (text) => {
         const newPost = {
             id: uuid.v4(),
             content: text,
             user: 'admin',
-            createDate: Date.now()
+            created_at: Date.now()
         };
 
-        this.setState((state) => {
-            const {posts} = state;
-            localStorage.setItem('posts', JSON.stringify([newPost, ...posts]));
-
-            return {
-                posts: [newPost, ...posts ]
-            };
-        });
-        console.log(this.state);
+        const posts = [...this.state.posts, newPost];
+        this.setState({posts});
+        localStorage.setItem('posts', JSON.stringify(posts));
+        // this.setState((state) => {
+        //     const {posts} = state;
+        //     localStorage.setItem('posts', JSON.stringify([newPost, ...posts]));
+        //
+        //     return {
+        //         posts: [newPost, ...posts ]
+        //     };
+        // });
+        // console.log(this.state);
     };
 
-    deletePost = (id) => {
-        this.setState( ({posts}) => {
+    deletePost = (deletedPost) => {
+        this.setState( (state) => {
+            const shallowCopyPosts = [...state.posts];
+            console.log('State before is:', state);
+            const postArrIndex = shallowCopyPosts.findIndex((post) => post.id === deletedPost.id);
+            shallowCopyPosts.splice( postArrIndex, 1);
+            localStorage.setItem('posts', JSON.stringify(shallowCopyPosts));
+            console.log('State is:', state);
+            return { posts: shallowCopyPosts }
 
-            const postArrIndex = posts.findIndex((post) => post.id === id);
-            posts.splice( postArrIndex, 1);
-            localStorage.setItem('posts', JSON.stringify(posts));
-
-            return posts;
+            // const { posts } = state,
+            //     postArrIndex = posts.findIndex( (post) => post.id === deletedPost.id ),
+            //     shallowCopyPosts = [...state.posts],
+            //     resultArray = shallowCopyPosts.splice(postArrIndex, 1);
+            // console.log('State is:', state);
+            // return {posts: resultArray }
         });
 
     };
+
 
     render() {
+        console.log(this.state);
         const { posts } = this.state;
         return (
             <Container className="container">

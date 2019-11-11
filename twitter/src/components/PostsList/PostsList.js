@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Post from "../Post/Post";
 
 const StyledList = styled.div `
-    padding: .25rem .75rem;
+    // padding: .25rem .75rem;
 `;
 const StyledListItem = styled.div `
     margin-bottom: .25rem;
@@ -21,7 +21,7 @@ const PostsList = ({ posts, onDelete }) => {
             const {...postProps} = post;
             return (
                 <StyledListItem key={post.id}>
-                    <Post {...postProps} onDelete={ () => onDelete(post.id)} />
+                    <Post {...postProps} onDelete={ () => onDelete(post)} />
                 </StyledListItem>
             );
         } ) }
