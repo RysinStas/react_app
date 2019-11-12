@@ -14,10 +14,7 @@ const PostContent = styled.div`
     white-space: pre-line;   
 `;
 
-class Post extends React.Component {
-
-    render() {
-        const {content, user, created_at, onDelete} = this.props;
+const Post = ({content, user, created_at, onDelete}) => {
         return (
             <Row type="flex" align="bottom" gutter={8}>
                 <Col span={23}>
@@ -34,7 +31,6 @@ class Post extends React.Component {
                 </Col>
             </Row>
         );
-    }
-}
+};
 
 export default Post;
