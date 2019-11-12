@@ -10,7 +10,7 @@ const { TextArea } = Input;
 
 const PostAddForm = (props) => {
     const onPressEnter = (e) => {
-        if (e.ctrlKey) {
+        if (e.ctrlKey || e.metaKey) {
             const value = props.form.getFieldValue('content');
             props.form.setFieldsValue({
                 content: value + '\n',
