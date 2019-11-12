@@ -15,22 +15,22 @@ const PostContent = styled.div`
 `;
 
 const Post = ({content, user, created_at, onDelete}) => {
-        return (
-            <Row type="flex" align="bottom" gutter={8}>
-                <Col span={23}>
-                    <Row>
-                        <PostContent>{content}</PostContent>
-                        <Col span={8}>create by {user}</Col>
-                        <Col span={8} offset={8}>{ moment(created_at).format('LLL')}</Col>
-                    </Row>
-                </Col>
-                <Col span={1}>
-                    <Button type="danger" size="small" icon="delete"
-                            onClick={onDelete}>
-                    </Button>
-                </Col>
-            </Row>
-        );
+    return (
+        <Row type="flex" align="bottom" gutter={8}>
+            <Col span={23}>
+                <Row>
+                    <PostContent>{content}</PostContent>
+                    <Col span={8}>create by {user}</Col>
+                    <Col span={8} offset={8}>{ moment(created_at).format('LLL')}</Col>
+                </Row>
+            </Col>
+            <Col span={1}>
+                <Button type="danger" size="small" icon="delete"
+                        onClick={onDelete}>
+                </Button>
+            </Col>
+        </Row>
+    );
 };
 
 export default Post;
