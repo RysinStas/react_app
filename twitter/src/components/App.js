@@ -65,7 +65,7 @@ class App extends React.Component {
                 />
                 <PostsList
                     posts={posts}
-                    onDelete={(id) => this.deletePost(id)}
+                    onDelete={(post) => this.deletePost(post)}
                 />
             </Container>
         );
