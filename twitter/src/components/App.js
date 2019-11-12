@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import uuid from 'uuid';
-import AppHeader from './AppHeader/AppHeader';
-import PostAddForm from './PostAddForm/PostAddForm';
-import PostsList from './PostsList/PostsList';
+import AppHeader from './AppHeader';
+import PostAddForm from './PostAddForm';
+import PostsList from './PostsList';
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -14,62 +14,47 @@ const Container = styled.div`
     margin-left: auto;     
 `;
 
-class App extends React.Component {
+const App = () => {
 
-    state = {
-        posts: []
-    };
+    const [posts, setPosts] = useState([]);
 
-    componentDidMount() {
-        const posts = JSON.parse(localStorage.getItem('posts')) ;
-        if (posts) {
-            this.setState({posts});
-        }
-    }
+    useEffect(() => {
+        const response = JSON.parse(localStorage.getItem('posts')) ;
+            if (response) {
+                setPosts(response);
+            }
+    }, []);
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.post !== this.state.posts){
-            localStorage.setItem('posts', JSON.stringify(this.state.posts));
-        }
-    }
+    // Posts update hook
+    useEffect(() => localStorage.setItem('posts', JSON.stringify(posts)), [posts]);
 
-    addPost = (text) => {
-        const posts = [
-            ...this.state.posts,
+    const addPost = (content) => {
+        setPosts( [
+            ...posts,
             {
                 id: uuid.v4(),
-                content: text,
+                content: content,
                 user: 'admin',
                 created_at: Date.now()
-            }];
-        this.setState({posts});
+            }] );
     };
 
-    deletePost = (deletedPost) => {
-        this.setState( (state) => {
-            const shallowCopyPosts = [...state.posts],
-            postArrIndex = shallowCopyPosts.findIndex((post) => post.id === deletedPost.id);
-            shallowCopyPosts.splice( postArrIndex, 1);
-
-            return { posts: shallowCopyPosts }
-        });
+    const deletePost = (deletedPost) => {
+        setPosts(posts.filter((post) => post.id !== deletedPost.id));
     };
 
-    render() {
-        const { posts } = this.state;
-        return (
-            <Container>
-                <AppHeader />
-                <PostAddForm
-                    onAddPost={this.addPost}
-                />
-                <PostsList
-                    posts={posts}
-                    onDelete={(post) => this.deletePost(post)}
-                />
-            </Container>
-        );
-    }
-}
+    return (
+        <Container>
+            <AppHeader />
+            <PostAddForm
+                onAddPost={addPost}
+            />
+            <PostsList
+                posts={posts}
+                onDelete={(post) => deletePost(post)}
+            />
+        </Container>
+    );
+};
 
 export default App;

@@ -20,7 +20,7 @@ const Post = ({content, user, created_at, onDelete}) => {
             <Col span={23}>
                 <Row>
                     <PostContent>{content}</PostContent>
-                    <Col span={8}>create by {user}</Col>
+                    <Col span={8}>created by {user}</Col>
                     <Col span={8} offset={8}>{ moment(created_at).format('LLL')}</Col>
                 </Row>
             </Col>
