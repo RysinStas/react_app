@@ -1,12 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-
 import Post from "../Post/Post";
 
-const StyledList = styled.div `
-    // padding: .25rem .75rem;
-`;
-const StyledListItem = styled.div `
+const PostsListItem = styled.div `
     margin-bottom: .25rem;
     padding: .75rem 1.25rem;      
     overflow: auto;  
@@ -17,15 +13,15 @@ const StyledListItem = styled.div `
 
 const PostsList = ({ posts, onDelete }) => {
     return (
-        <StyledList>{ posts.map( (post) => {
+        <div>{ posts.map( (post) => {
             const {...postProps} = post;
             return (
-                <StyledListItem key={post.id}>
+                <PostsListItem key={post.id}>
                     <Post {...postProps} onDelete={ () => onDelete(post)} />
-                </StyledListItem>
+                </PostsListItem>
             );
         } ) }
-        </StyledList>
+        </div>
     );
 };
 

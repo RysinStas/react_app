@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+
 const TextCenter = styled.h1`
-    text-align: center
+    text-align: center;
     font-size: 3rem;
     font-weight: 400;`;
+
 const AppHeader = () => {
-    return  <TextCenter className="text-center">Twitter App</TextCenter>;
+    return  <TextCenter>Twitter App</TextCenter>;
 };
 
 export default AppHeader;
