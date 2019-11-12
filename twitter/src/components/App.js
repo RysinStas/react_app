@@ -47,19 +47,15 @@ class App extends React.Component {
 
     deletePost = (deletedPost) => {
         this.setState( (state) => {
-            const shallowCopyPosts = [...state.posts];
-            // console.log('State before is:', state);
-            const postArrIndex = shallowCopyPosts.findIndex((post) => post.id === deletedPost.id);
+            const shallowCopyPosts = [...state.posts],
+            postArrIndex = shallowCopyPosts.findIndex((post) => post.id === deletedPost.id);
             shallowCopyPosts.splice( postArrIndex, 1);
-            localStorage.setItem('posts', JSON.stringify(shallowCopyPosts));
-            // console.log('State after splice:', state);
+
             return { posts: shallowCopyPosts }
         });
-
     };
 
     render() {
-        // console.log('State:', this.state);
         const { posts } = this.state;
         return (
             <Container>
