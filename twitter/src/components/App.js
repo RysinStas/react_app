@@ -4,6 +4,8 @@ import AppHeader from './AppHeader';
 import PostAddForm from './PostAddForm';
 import PostsList from './PostsList';
 import styled from "styled-components";
+import {connect} from "react-redux";
+import {fetchPosts} from "../actions"
 
 const Container = styled.div`
     width: 100%;
@@ -14,14 +16,21 @@ const Container = styled.div`
     margin-left: auto;     
 `;
 
-const App = () => {
-    return (
-        <Container>
-            <AppHeader />
-            <PostAddForm />
-            <PostsList />
-        </Container>
-    );
-};
+class App extends React.Component {
 
-export default App;
+    componentDidMount() {
+        this.props.fetchPosts();
+    }
+
+    render() {
+        return (
+            <Container>
+                <AppHeader />
+                <PostAddForm />
+                <PostsList />
+            </Container>
+        );
+    }
+}
+
+export default connect(null, {fetchPosts})(App);

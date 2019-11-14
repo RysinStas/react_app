@@ -1,23 +1,25 @@
+import {FETCH_POSTS, ADD_POST, DELETE_POST} from "./actions";
+
 const initialState = {
     posts: []
 };
 
-const reducer = (state = initialState, actions) => {
-    switch (actions.type) {
-        case 'FETCH_POSTS':
+const reducer = (state = initialState, action) => {
+    switch (action.type) {
+        case FETCH_POSTS:
             return {
                 ...state,
-                posts: actions.posts
+                posts: action.payload.posts
             };
-        case 'ADD_POST':
+        case ADD_POST:
             return {
                 ...state,
-                posts: [...state.posts, actions.post]
+                posts: [...state.posts, action.payload.post]
             };
-        case 'DELETE_POST':
+        case DELETE_POST:
             return {
                 ...state,
-                posts: state.posts.filter((post) => post.id !== actions.post.id)
+                posts: state.posts.filter((post) => post.id !== action.payload.post.id)
             };
         default:
             return state;

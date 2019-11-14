@@ -1,9 +1,8 @@
-import React, {useEffect} from "react";
+import React from "react";
 import styled from "styled-components";
 import Post from "./Post";
 
 import {connect} from "react-redux";
-import * as actions from "../actions"
 
 const PostsListItem = styled.div`
     margin-bottom: .25rem;
@@ -14,14 +13,7 @@ const PostsListItem = styled.div`
     border-radius: .25rem;
 `;
 
-const PostsList = ({posts, postsLoaded}) => {
-
-    useEffect(() => {
-        const response = JSON.parse(localStorage.getItem('posts')) ;
-        if (response) {
-            postsLoaded(response);
-        }
-    }, []);
+const PostsList = ({posts}) => {
 
     return (
         <div>{posts.map( (post) => {
@@ -39,4 +31,4 @@ const mapStateToProps = ({posts}) => {
     return {posts}
 };
 
-export default  connect(mapStateToProps, actions)(PostsList);
+export default  connect(mapStateToProps)(PostsList);

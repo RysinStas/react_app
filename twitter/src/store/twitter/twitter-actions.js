@@ -1,9 +1,7 @@
 import uuid from "uuid";
 
 export const FETCH_POSTS = 'FETCH_POSTS';
-export const fetchPosts = () => {
-    const response = JSON.parse(localStorage.getItem('posts')) ;
-    const posts = response ? response : [];
+export const fetchPosts = (posts) => {
     return {
         type: FETCH_POSTS,
         payload : {posts}
@@ -32,5 +30,3 @@ export const deletePost = (post) => {
         payload : {post}
     }
 };
-
-
