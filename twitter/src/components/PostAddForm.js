@@ -2,6 +2,9 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import 'antd/dist/antd.css';
 
+import * as actions from '../actions';
+import {connect} from "react-redux";
+
 import Schema from 'async-validator';
 
 Schema.warning = function(){};
@@ -23,7 +26,7 @@ const PostAddForm = (props) => {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                props.onAddPost(values.content);
+                props.addPost(values.content);
                 props.form.resetFields();
             }
         });
@@ -55,4 +58,8 @@ const PostAddForm = (props) => {
     );
 };
 
-export default Form.create({ name: 'coordinated' })(PostAddForm);
+const mapStateToProps = ({posts}) => {
+    return {posts}
+};
+
+export default connect(mapStateToProps, actions)(Form.create({ name: 'coordinated' })(PostAddForm));

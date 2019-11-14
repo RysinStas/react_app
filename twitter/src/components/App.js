@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import uuid from 'uuid';
+import React from 'react';
+
 import AppHeader from './AppHeader';
 import PostAddForm from './PostAddForm';
 import PostsList from './PostsList';
@@ -15,44 +15,11 @@ const Container = styled.div`
 `;
 
 const App = () => {
-
-    const [posts, setPosts] = useState([]);
-
-    useEffect(() => {
-        const response = JSON.parse(localStorage.getItem('posts')) ;
-            if (response) {
-                setPosts(response);
-            }
-    }, []);
-
-    // Posts update hook
-    useEffect(() => localStorage.setItem('posts', JSON.stringify(posts)), [posts]);
-
-    const addPost = (content) => {
-        setPosts( [
-            ...posts,
-            {
-                id: uuid.v4(),
-                content: content,
-                user: 'admin',
-                created_at: Date.now()
-            }] );
-    };
-
-    const deletePost = (deletedPost) => {
-        setPosts(posts.filter((post) => post.id !== deletedPost.id));
-    };
-
     return (
         <Container>
             <AppHeader />
-            <PostAddForm
-                onAddPost={addPost}
-            />
-            <PostsList
-                posts={posts}
-                onDelete={(post) => deletePost(post)}
-            />
+            <PostAddForm />
+            <PostsList />
         </Container>
     );
 };

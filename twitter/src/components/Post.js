@@ -4,6 +4,9 @@ import styled from "styled-components";
 import {Button, Col, Row} from 'antd';
 import 'antd/dist/antd.css';
 
+import * as actions from '../actions';
+import {connect} from "react-redux";
+
 const PostContent = styled.div`
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
@@ -14,23 +17,23 @@ const PostContent = styled.div`
     white-space: pre-line;   
 `;
 
-const Post = ({content, user, created_at, onDelete}) => {
+const Post = ({post, deletePost}) => {
     return (
         <Row type="flex" align="bottom" gutter={8}>
             <Col span={23}>
                 <Row>
-                    <PostContent>{content}</PostContent>
-                    <Col span={8}>created by {user}</Col>
-                    <Col span={8} offset={8}>{ moment(created_at).format('LLL')}</Col>
+                    <PostContent>{post.content}</PostContent>
+                    <Col span={8}>created by {post.user}</Col>
+                    <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
                 </Row>
             </Col>
             <Col span={1}>
                 <Button type="danger" size="small" icon="delete"
-                        onClick={onDelete}>
+                        onClick={() => deletePost(post)}>
                 </Button>
             </Col>
         </Row>
     );
 };
 
-export default Post;
+export default connect(null, actions)(Post);
