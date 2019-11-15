@@ -1,4 +1,4 @@
-import {FETCH_POSTS, ADD_POST, DELETE_POST} from "./actions";
+import {FETCH_POSTS, ADD_POST, DELETE_POST} from "./twitter-actions";
 
 const initialState = {
     posts: []
@@ -12,6 +12,7 @@ const reducer = (state = initialState, action) => {
                 posts: action.payload.posts
             };
         case ADD_POST:
+            // console.log('запись в store');
             return {
                 ...state,
                 posts: [...state.posts, action.payload.post]

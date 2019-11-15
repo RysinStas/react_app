@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import 'antd/dist/antd.css';
 
-import * as actions from '../actions';
+import * as actions from '../store/twitter/twitter-actions';
 import {connect} from "react-redux";
 
 import Schema from 'async-validator';

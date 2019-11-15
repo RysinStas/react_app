@@ -5,7 +5,7 @@ import PostAddForm from './PostAddForm';
 import PostsList from './PostsList';
 import styled from "styled-components";
 import {connect} from "react-redux";
-import {fetchPosts} from "../actions"
+import {fetchPosts} from "../store/twitter/twitter-actions"
 
 const Container = styled.div`
     width: 100%;
@@ -19,7 +19,7 @@ const Container = styled.div`
 class App extends React.Component {
 
     componentDidMount() {
-        this.props.fetchPosts();
+        this.props.dispatch(fetchPosts());
     }
 
     render() {
@@ -33,4 +33,4 @@ class App extends React.Component {
     }
 }
 
-export default connect(null, {fetchPosts})(App);
+export default connect()(App);

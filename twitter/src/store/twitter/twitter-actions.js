@@ -1,7 +1,10 @@
 import uuid from "uuid";
 
 export const FETCH_POSTS = 'FETCH_POSTS';
-export const fetchPosts = (posts) => {
+export const fetchPosts = () => {
+    const response =  JSON.parse(localStorage.getItem('posts'));
+    const posts = response ? response : [];
+    // console.log(posts);
     return {
         type: FETCH_POSTS,
         payload : {posts}
