@@ -1,7 +1,8 @@
 import React from "react";
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import {Link} from "react-router-dom";
-import axios from "axios";
+import { Form, Icon, Input, Button} from 'antd';
+import {Link, Redirect} from "react-router-dom";
+import {connect} from "react-redux";
+import * as actions from '../store/twitter/twitter-actions';
 
 class LoginForm extends React.Component {
     handleSubmit = e => {
@@ -9,26 +10,17 @@ class LoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                this.sendData(values);
+                this.props.userLogin(values);
             }
         });
     };
-    sendData = (data) => {
-        const querystring = require('querystring');
-        let config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }
-        };
-        axios.post('http://dev.com/api/login/',
-            querystring.stringify(data),config
-        )
-            .then(r => console.log(r))
-            .catch(e => console.log(e));
-    };
 
     render() {
+        const { err, username } = this.props;
         const { getFieldDecorator } = this.props.form;
+        if (username) {
+            return  <Redirect to="/feed" />
+        }
         return (
             <Form onSubmit={this.handleSubmit} className="login-form" style={ {'maxWidth': '300px'}}>
                 <Form.Item>
@@ -53,6 +45,9 @@ class LoginForm extends React.Component {
                     )}
                 </Form.Item>
                 <Form.Item>
+                    { err ? `${err}` : ''}
+                </Form.Item>
+                <Form.Item>
                     <Button type="primary" htmlType="submit" className="login-form-button" style={{'width' : '100%'}}>
                         Sign in
                     </Button>
@@ -62,6 +57,8 @@ class LoginForm extends React.Component {
         );
     }
 }
-
-export default Form.create({ name: 'login' })(LoginForm);
+const mapStateToProps = ({err, username}) => {
+    return {err, username}
+};
+export default connect(mapStateToProps,actions)(Form.create({ name: 'login' })(LoginForm));
 

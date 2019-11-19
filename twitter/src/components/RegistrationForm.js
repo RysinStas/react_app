@@ -1,6 +1,8 @@
 import React from "react";
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import axios from 'axios'
+import { Form, Icon, Input, Button} from 'antd';
+import {connect} from "react-redux";
+import {Redirect} from "react-router-dom";
+import * as actions from '../store/twitter/twitter-actions';
 
 class RegistrationForm extends React.Component {
     handleSubmit = e => {
@@ -8,8 +10,7 @@ class RegistrationForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                this.sendData(values);
-                // this.sendData(values).then((json)=>{ console.log(json) });
+                this.props.userRegistration(values);
             }
         });
     };
@@ -23,22 +24,12 @@ class RegistrationForm extends React.Component {
         }
     };
 
-    sendData = (data) => {
-        const querystring = require('querystring');
-        let config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }
-        };
-        axios.post('http://dev.com/api/register/',
-            querystring.stringify(data),config
-            )
-            .then(r => console.log(r))
-            .catch(e => console.log(e));
-    };
-
     render() {
+        const { err, username } = this.props;
         const { getFieldDecorator } = this.props.form;
+        if (username) {
+            return  <Redirect to="/feed" />
+        }
         return (
             <Form onSubmit={this.handleSubmit} className="login-form" style={ {'maxWidth': '300px'}}>
                 <Form.Item>
@@ -75,8 +66,11 @@ class RegistrationForm extends React.Component {
                     )}
                 </Form.Item>
                 <Form.Item>
+                    { err ? `${err}` : ''}
+                </Form.Item>
+                <Form.Item>
                     <Button type="primary" htmlType="submit" className="login-form-button" style={{'width' : '100%'}}>
-                        Sign in
+                        Sign up
                     </Button>
                 </Form.Item>
             </Form>
@@ -84,5 +78,9 @@ class RegistrationForm extends React.Component {
     }
 }
 
-export default Form.create({ name: 'registration' })(RegistrationForm);
+const mapStateToProps = ({err, username}) => {
+    return {err, username}
+};
+
+export default connect(mapStateToProps, actions)(Form.create({ name: 'registration' })(RegistrationForm));
 

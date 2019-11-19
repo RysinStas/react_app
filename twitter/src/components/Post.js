@@ -7,6 +7,7 @@ import 'antd/dist/antd.css';
 import * as actions from '../store/twitter/twitter-actions';
 import {connect} from "react-redux";
 
+
 const PostContent = styled.div`
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
@@ -17,7 +18,25 @@ const PostContent = styled.div`
     white-space: pre-line;   
 `;
 
-const Post = ({post, deletePost}) => {
+const Post = ({post, deletePost, username}) => {
+    if (username===post.user) {
+        return (
+            <Row type="flex" align="bottom" gutter={8}>
+                <Col span={23}>
+                    <Row>
+                        <PostContent>{post.content}</PostContent>
+                        <Col span={8}>created by {post.user}</Col>
+                        <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
+                    </Row>
+                </Col>
+                <Col span={1}>
+                    <Button type="danger" size="small" icon="delete"
+                            onClick={() => deletePost(post)}>
+                    </Button>
+                </Col>
+            </Row>
+        );
+    }
     return (
         <Row type="flex" align="bottom" gutter={8}>
             <Col span={23}>
@@ -28,12 +47,13 @@ const Post = ({post, deletePost}) => {
                 </Row>
             </Col>
             <Col span={1}>
-                <Button type="danger" size="small" icon="delete"
-                        onClick={() => deletePost(post)}>
-                </Button>
+
             </Col>
         </Row>
     );
 };
+const mapStateToProps = ({username}) => {
+    return {username}
+};
 
-export default connect(null, actions)(Post);
+export default connect(mapStateToProps, actions)(Post);

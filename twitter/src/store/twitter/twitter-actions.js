@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import axios from "axios";
+import querystring from "querystring";
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const fetchPosts = () => {
@@ -13,14 +14,14 @@ export const fetchPosts = () => {
 };
 
 export const ADD_POST = 'ADD_POST';
-export const addPost = (content) => {
+export const addPost = (content, username) => {
     return {
         type: ADD_POST,
         payload: {
             post: {
                 id: uuid.v4(),
                 content: content,
-                user: 'admin',
+                user: username,
                 created_at: Date.now()
             }
         }
@@ -36,9 +37,93 @@ export const deletePost = (post) => {
 };
 
 export const USER_LOGIN = 'USER_LOGIN';
-export const userLogin = (post) => {
+export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
+export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
+export const USER_LOGIN_FAIL = 'USER_LOGIN_FAIL';
+export const userLogin = (credentials) => {
+    return (dispatch) => {
+        //
+        dispatch ({
+            type: USER_LOGIN_REQUEST,
+            payload : {credentials}
+        });
+
+        // const querystring = require('querystring');
+        let config = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        };
+        setTimeout(()=>{
+            axios.post('http://dev.com/api/login/',
+                querystring.stringify(credentials),config
+            )
+                .then(response => {
+                    console.log(response);
+                    if (response.data.result.err) {
+                        throw new Error(response.data.result.err);
+                    }
+                    dispatch ({
+                        type: USER_LOGIN_SUCCESS,
+                        payload : {username: credentials.username}
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    dispatch ({
+                        type: USER_LOGIN_FAIL,
+                        payload : {err}
+                    });
+                })
+        }, 1000);
+    };
+};
+
+export const USER_LOGOUT = 'USER_LOGOUT';
+export const userLogout = () => {
     return {
-        type: USER_LOGIN,
-        payload : {post}
+        type: USER_LOGOUT
     }
+};
+
+
+export const USER_REGISTER_REQUEST = 'USER_REGISTER_REQUEST';
+export const USER_REGISTER_SUCCESS = 'USER_REGISTER_SUCCESS';
+export const USER_REGISTER_FAIL = 'USER_REGISTER_FAIL';
+export const userRegistration = (userData) => {
+    return (dispatch) => {
+
+        dispatch ({
+            type: USER_REGISTER_REQUEST
+        });
+
+        // const querystring = require('querystring');
+        let config = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        };
+        setTimeout(()=>{
+            axios.post('http://dev.com/api/register/',
+                querystring.stringify(userData),config
+            )
+                .then(response => {
+                    console.log(response);
+                    if (response.data.result.err) {
+                        throw new Error(response.data.result.err);
+                    }
+                    dispatch ({
+                        type: USER_REGISTER_SUCCESS,
+                        payload : {username: userData.username}
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    dispatch ({
+                        type: USER_REGISTER_FAIL,
+                        payload : {err}
+                    });
+                })
+        }, 1000);
+    };
 };

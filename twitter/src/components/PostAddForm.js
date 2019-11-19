@@ -26,7 +26,7 @@ const PostAddForm = (props) => {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                props.addPost(values.content);
+                props.addPost(values.content, props.username);
                 props.form.resetFields();
             }
         });
@@ -58,8 +58,8 @@ const PostAddForm = (props) => {
     );
 };
 
-const mapStateToProps = ({posts}) => {
-    return {posts}
+const mapStateToProps = ({posts, username}) => {
+    return {posts, username}
 };
 
 export default connect(mapStateToProps, actions)(Form.create({ name: 'coordinated' })(PostAddForm));

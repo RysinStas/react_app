@@ -7,10 +7,15 @@ import styled from "styled-components";
 import {connect} from "react-redux";
 import {fetchPosts} from "../store/twitter/twitter-actions"
 
-import { Route, Link, BrowserRouter as Router} from "react-router-dom"
-import LoginForm from "./LoginForm";
+import { Route, BrowserRouter as Router} from "react-router-dom"
+
 import {Row, Col} from "antd";
 import RegistrationForm from "./RegistrationForm";
+import SecretPage from "./pages/SecretPage";
+import LoginPage from "./pages/LoginPage";
+import LogoutPage from "./pages/LogoutPage";
+import FeedPage from "./pages/FeedPage"
+import SignUpPage from "./pages/SignUpPage"
 
 
 const Container = styled.div`
@@ -34,11 +39,11 @@ class App extends React.Component {
                 <Router>
                     <AppHeader />
                     <Route path="/" component={Welcome} exact/>
-                    <Route path="/feed" component={Feed}/>
-                    <Route path="/login" component={SignIn}/>
-                    <Route path="/registration" component={SignUp}/>
-                    {/*<PostAddForm />*/}
-                    {/*<PostsList />*/}
+                    <Route path="/feed" component={FeedPage}/>
+                    <Route path="/login" component={LoginPage}/>
+                    <Route path="/logout" component={LogoutPage}/>
+                    <Route path="/registration" component={SignUpPage}/>
+                    <Route path="/secret" component={SecretPage}/>
                 </Router>
             </Container>
         );
@@ -50,35 +55,6 @@ const Welcome = () => {
         <Row>
             <Col span={8} offset={8}>
                 <h2>Welcome to App</h2>
-            </Col>
-        </Row>
-    );
-};
-
-const Feed = () => {
-    return (
-        <div>
-            <h2>Feed</h2>
-            <PostAddForm />
-            <PostsList />
-        </div>
-    );
-};
-const SignIn = () => {
-    return (
-        <Row>
-            <Col span={8} offset={8}>
-                <LoginForm />
-            </Col>
-        </Row>
-    );
-};
-
-const SignUp = () => {
-    return (
-        <Row>
-            <Col span={8} offset={8}>
-                <RegistrationForm />
             </Col>
         </Row>
     );

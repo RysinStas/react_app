@@ -47,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["password"]))){
         $err .= "Please enter a password. ";
     } elseif(strlen(trim($_POST["password"])) < 6){
-        $err .= "Password must have atleast 6 characters. ";
+        $err .= "Password must have at least 6 characters. ";
     } else{
         $password = trim($_POST["password"]);
     }
@@ -94,7 +94,6 @@ if (empty($err)) {
 } else {
     $result = array('success' => false, 'err' => $err) ;
 }
-
 
 echo json_response($result);
 die();
