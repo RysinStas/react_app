@@ -2,38 +2,101 @@ import uuid from "uuid";
 import axios from "axios";
 import querystring from "querystring";
 
-export const FETCH_POSTS = 'FETCH_POSTS';
+export const API_URL = 'http://dev.com/api/';
+
+export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
+export const FETCH_POSTS_FAIL = 'FETCH_POSTS_FAIL';
 export const fetchPosts = () => {
-    const response =  JSON.parse(localStorage.getItem('posts'));
-    const posts = response ? response : [];
-    // console.log(posts);
-    return {
-        type: FETCH_POSTS,
-        payload : {posts}
+    return (dispatch) => {
+        let config = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        };
+        axios.get(`${API_URL}posts/`, config
+        ).then(response => {
+            if (response.data.err) {
+                throw new Error(response.data.err);
+            }
+            dispatch({
+                type: FETCH_POSTS_SUCCESS,
+                payload : {posts: response.data.data}
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            dispatch({
+                type: FETCH_POSTS_FAIL,
+                payload: {err}
+            });
+        });
     }
 };
 
-export const ADD_POST = 'ADD_POST';
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
+export const ADD_POST_FAIL = 'ADD_POST_FAIL';
 export const addPost = (content, username) => {
-    return {
-        type: ADD_POST,
-        payload: {
-            post: {
-                id: uuid.v4(),
-                content: content,
-                user: username,
-                created_at: Date.now()
+    return (dispatch) => {
+        const post = {
+            post_id: uuid.v4(),
+            content: content,
+            username: username,
+            created_at: Date.now()
+        };
+        let config = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
             }
-        }
+        };
+        axios.post(`${API_URL}posts/`,
+            querystring.stringify(post), config
+        ).then(response => {
+            if (response.data.err) {
+                throw new Error(response.data.err);
+            }
+            dispatch({
+                type: ADD_POST_SUCCESS,
+                payload: {post}
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            dispatch({
+                type: ADD_POST_FAIL,
+                payload: {err}
+            });
+        })
     }
 };
 
 export const DELETE_POST = 'DELETE_POST';
 export const deletePost = (post) => {
-    return {
-        type: DELETE_POST,
-        payload : {post}
-    }
+    return (dispatch) => {
+        let config = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        };
+        const data = {delete: post.post_id};
+        axios.post(`${API_URL}posts/`,
+            querystring.stringify(data), config
+        ).then(response => {
+            if (response.data.err) {
+                throw new Error(response.data.err);
+            }
+            dispatch({
+                type: DELETE_POST,
+                payload : {post}
+            });
+        })
+            .catch(err => {
+                console.log(err);
+                // dispatch({
+                //     type: ADD_POST_FAIL,
+                //     payload: {err}
+                // });
+            })
+    };
 };
 
 export const USER_LOGIN = 'USER_LOGIN';
@@ -47,21 +110,18 @@ export const userLogin = (credentials) => {
             type: USER_LOGIN_REQUEST,
             payload : {credentials}
         });
-
-        // const querystring = require('querystring');
         let config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
         };
         setTimeout(()=>{
-            axios.post('http://dev.com/api/login/',
+            axios.post(`${API_URL}login/`,
                 querystring.stringify(credentials),config
             )
                 .then(response => {
-                    console.log(response);
-                    if (response.data.result.err) {
-                        throw new Error(response.data.result.err);
+                    if (response.data.err) {
+                        throw new Error(response.data.err);
                     }
                     dispatch ({
                         type: USER_LOGIN_SUCCESS,
@@ -97,20 +157,18 @@ export const userRegistration = (userData) => {
             type: USER_REGISTER_REQUEST
         });
 
-        // const querystring = require('querystring');
         let config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
         };
         setTimeout(()=>{
-            axios.post('http://dev.com/api/register/',
+            axios.post(`${API_URL}register/`,
                 querystring.stringify(userData),config
             )
                 .then(response => {
-                    console.log(response);
-                    if (response.data.result.err) {
-                        throw new Error(response.data.result.err);
+                    if (response.data.err) {
+                        throw new Error(response.data.err);
                     }
                     dispatch ({
                         type: USER_REGISTER_SUCCESS,

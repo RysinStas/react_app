@@ -6,12 +6,12 @@ if (empty($_POST)) {
     $_POST = json_decode(file_get_contents("php://input"), true) ? : [];
 }
 
-// Define variables and initialize with empty values
-$username = $password = $err = "";
+
+$username = $password =  "";
 $result = [];
 
-// Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Check if username is empty
     if(empty(trim($_POST["username"]))){

@@ -4,11 +4,10 @@ if (empty($_POST)) {
     $_POST = json_decode(file_get_contents("php://input"), true) ? : [];
 }
 
-// Define variables and initialize with empty values
-$username = $password = $confirm_password = $err = "";
+$username = $password = $confirm_password =  "";
 $result = [];
-// Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Validate username
     if(empty(trim($_POST["username"]))){

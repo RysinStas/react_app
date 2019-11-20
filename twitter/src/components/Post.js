@@ -19,13 +19,13 @@ const PostContent = styled.div`
 `;
 
 const Post = ({post, deletePost, username}) => {
-    if (username===post.user) {
+    if (username===post.username) {
         return (
             <Row type="flex" align="bottom" gutter={8}>
                 <Col span={23}>
                     <Row>
                         <PostContent>{post.content}</PostContent>
-                        <Col span={8}>created by {post.user}</Col>
+                        <Col span={8}>created by {post.username}</Col>
                         <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
                     </Row>
                 </Col>
@@ -42,7 +42,7 @@ const Post = ({post, deletePost, username}) => {
             <Col span={23}>
                 <Row>
                     <PostContent>{post.content}</PostContent>
-                    <Col span={8}>created by {post.user}</Col>
+                    <Col span={8}>created by {post.username}</Col>
                     <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
                 </Row>
             </Col>
@@ -52,8 +52,10 @@ const Post = ({post, deletePost, username}) => {
         </Row>
     );
 };
-const mapStateToProps = ({username}) => {
-    return {username}
+const mapStateToProps = (state) => {
+    return {
+        username : state.auth.username
+    }
 };
 
 export default connect(mapStateToProps, actions)(Post);

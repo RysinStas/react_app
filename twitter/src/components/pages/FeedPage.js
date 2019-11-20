@@ -20,7 +20,9 @@ const FeedPage = ({username}) => {
         </div>
     );
 };
-const mapStateToProps = ({username}) =>{
-    return {username}
+const mapStateToProps = (state) =>{
+    return {
+        username: state.auth.username
+    }
 };
 export default connect(mapStateToProps)(FeedPage);

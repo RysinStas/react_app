@@ -58,8 +58,11 @@ const PostAddForm = (props) => {
     );
 };
 
-const mapStateToProps = ({posts, username}) => {
-    return {posts, username}
+const mapStateToProps = (state) => {
+    return {
+        posts: state.feed.post,
+        username: state.auth.username
+    }
 };
 
 export default connect(mapStateToProps, actions)(Form.create({ name: 'coordinated' })(PostAddForm));

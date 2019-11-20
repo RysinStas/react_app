@@ -14,7 +14,9 @@ const LoginPage = ({loading}) => {
     );
 };
 
-const mapStateToProps = ({loading, err, username}) => {
-    return {loading, err, username}
+const mapStateToProps = (state) => {
+    return {
+        loading:  state.auth.loading
+    }
 };
 export default connect(mapStateToProps,actions)(LoginPage);

@@ -1,66 +1,35 @@
 import {
-    FETCH_POSTS,
-    ADD_POST,
+    FETCH_POSTS_SUCCESS,
+    FETCH_POSTS_FAIL,
     DELETE_POST,
-    USER_LOGIN_REQUEST,
-    USER_LOGIN_SUCCESS,
-    USER_LOGIN_FAIL,
-    USER_LOGOUT,
-    USER_REGISTER_REQUEST,
-    USER_REGISTER_SUCCESS,
-    USER_REGISTER_FAIL
+    ADD_POST_SUCCESS,
+    ADD_POST_FAIL
 } from "./twitter-actions";
 
 const initialState = {
-    posts: [],
-    loading: false,
-    username: false,
-    err: false
+    posts: []
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case USER_LOGOUT:
-            return {
-                ...state,
-                username: false
-            };
-        case USER_LOGIN_REQUEST:
-        case USER_REGISTER_REQUEST:
-            return {
-                ...state,
-                loading: true
-            };
-        case USER_LOGIN_SUCCESS:
-        case USER_REGISTER_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                err: false,
-                username: action.payload.username
-            };
-        case USER_LOGIN_FAIL:
-        case USER_REGISTER_FAIL:
-            return {
-                ...state,
-                loading: false,
-                err: action.payload.err
-            };
-        case FETCH_POSTS:
+        case FETCH_POSTS_SUCCESS:
             return {
                 ...state,
                 posts: action.payload.posts
             };
-        case ADD_POST:
-            // console.log('запись в store');
+        case ADD_POST_SUCCESS:
             return {
                 ...state,
                 posts: [...state.posts, action.payload.post]
             };
+        case  FETCH_POSTS_FAIL:
+        case  ADD_POST_FAIL:
+            console.log(action.payload.err);
+            return state;
         case DELETE_POST:
             return {
                 ...state,
-                posts: state.posts.filter((post) => post.id !== action.payload.post.id)
+                posts: state.posts.filter((post) => post.post_id !== action.payload.post.post_id)
             };
         default:
             return state;

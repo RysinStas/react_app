@@ -18,7 +18,7 @@ const PostsList = ({posts}) => {
     return (
         <div>{posts.map( (post) => {
             return (
-                <PostsListItem key={post.id}>
+                <PostsListItem key={post.post_id}>
                     <Post post={post} />
                 </PostsListItem>
             );
@@ -27,8 +27,10 @@ const PostsList = ({posts}) => {
     );
 };
 
-const mapStateToProps = ({posts}) => {
-    return {posts}
+const mapStateToProps = (state) => {
+    return {
+        posts: state.feed.posts
+    }
 };
 
 export default  connect(mapStateToProps)(PostsList);

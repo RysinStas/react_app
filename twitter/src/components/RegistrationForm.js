@@ -9,7 +9,6 @@ class RegistrationForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
                 this.props.userRegistration(values);
             }
         });
@@ -65,7 +64,7 @@ class RegistrationForm extends React.Component {
                         />,
                     )}
                 </Form.Item>
-                <Form.Item>
+                <Form.Item style={{color: 'red'}}>
                     { err ? `${err}` : ''}
                 </Form.Item>
                 <Form.Item>

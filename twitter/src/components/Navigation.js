@@ -3,19 +3,7 @@ import { Menu, Icon } from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
-const { SubMenu } = Menu;
-
 class Navigation extends React.Component {
-    // state = {
-    //     current: 'home',
-    // };
-    //
-    // handleClick = e => {
-    //     console.log('click ', e);
-    //     this.setState({
-    //         current: e.key,
-    //     });
-    // };
 
     render() {
         const {location, username} = this.props;
@@ -37,21 +25,15 @@ class Navigation extends React.Component {
                     <Icon type="setting" />
                     Settings
                 </Menu.Item>
-                <Menu.Item key="/secret" >
-                    <Link to="/secret">
-                        <Icon type="setting" />
-                        Secret
-                    </Link>
-                </Menu.Item>
                 { !username ?
-                    <Menu.Item key="/login">
+                    <Menu.Item key="/login" style={{float: 'right'}}>
                         <Link to="/login">
                             <Icon type="login" />
                             Log In
                         </Link>
                     </Menu.Item>
                     :
-                    <Menu.Item key="/logout">
+                    <Menu.Item key="/logout" style={{float: 'right'}}>
                         <Link to="/logout">
                             <Icon type="logout" />
                             Log Out
@@ -63,8 +45,10 @@ class Navigation extends React.Component {
     }
 }
 
-const mapStateToProps = ({username}) => {
-    return {username}
+const mapStateToProps = (state) => {
+    return {
+        username: state.auth.username
+    }
 };
 
 export default connect(mapStateToProps)(withRouter(Navigation));

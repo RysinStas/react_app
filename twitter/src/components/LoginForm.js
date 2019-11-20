@@ -9,7 +9,6 @@ class LoginForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
                 this.props.userLogin(values);
             }
         });
@@ -44,7 +43,7 @@ class LoginForm extends React.Component {
                         />,
                     )}
                 </Form.Item>
-                <Form.Item>
+                <Form.Item style={{color: 'red'}}>
                     { err ? `${err}` : ''}
                 </Form.Item>
                 <Form.Item>
@@ -57,8 +56,11 @@ class LoginForm extends React.Component {
         );
     }
 }
-const mapStateToProps = ({err, username}) => {
-    return {err, username}
+const mapStateToProps = (state) => {
+    return {
+        err: state.auth.err,
+        username: state.auth.username
+    }
 };
 export default connect(mapStateToProps,actions)(Form.create({ name: 'login' })(LoginForm));
 
