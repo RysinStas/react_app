@@ -7,8 +7,6 @@ import {fetchPosts} from "../store/twitter/twitter-actions"
 
 import { Route, BrowserRouter as Router} from "react-router-dom"
 
-import {Row, Col} from "antd";
-
 import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
 import FeedPage from "./pages/FeedPage"
