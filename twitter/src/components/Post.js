@@ -6,6 +6,7 @@ import 'antd/dist/antd.css';
 
 import * as actions from '../store/twitter/twitter-actions';
 import {connect} from "react-redux";
+import PostEditForm from "./PostEditForm";
 
 
 const PostContent = styled.div`
@@ -19,38 +20,49 @@ const PostContent = styled.div`
 `;
 
 const Post = ({post, deletePost, username}) => {
-    if (username===post.username) {
+    // if (username===post.username) {
         return (
-            <Row type="flex" align="bottom" gutter={8}>
-                <Col span={23}>
-                    <Row>
-                        <PostContent>{post.content}</PostContent>
-                        <Col span={8}>created by {post.username}</Col>
-                        <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
-                    </Row>
-                </Col>
-                <Col span={1}>
-                    <Button type="danger" size="small" icon="delete"
-                            onClick={() => deletePost(post)}>
-                    </Button>
-                </Col>
-            </Row>
-        );
-    }
-    return (
-        <Row type="flex" align="bottom" gutter={8}>
-            <Col span={23}>
-                <Row>
-                    <PostContent>{post.content}</PostContent>
-                    <Col span={8}>created by {post.username}</Col>
-                    <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
+            <div>
+                <Row type="flex" align="bottom" gutter={8}>
+                    <Col span={23}>
+                        <Row>
+                            <PostContent>{post.content}</PostContent>
+                            <Col span={8}>created by {post.username}</Col>
+                            <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
+                        </Row>
+                    </Col>
+                    <Col span={1}>
+                        <Button type="danger" size="small" icon="delete"
+                                onClick={() => deletePost(post)}>
+                        </Button>
+                        <Button type="primary" size="small" icon="edit"
+                                onClick={() => console.log(post)}>
+                        </Button>
+                    </Col>
                 </Row>
-            </Col>
-            <Col span={1}>
+                <Row type="flex" align="bottom" gutter={8}>
+                    <Col span={23}>
+                        <PostEditForm post={post}/>
+                    </Col>
+                </Row>
+            </div>
 
-            </Col>
-        </Row>
-    );
+        );
+    // }
+    // return (
+    //     <Row type="flex" align="bottom" gutter={8}>
+    //         <Col span={23}>
+    //             <Row>
+    //                 <PostContent>{post.content}</PostContent>
+    //                 <Col span={8}>created by {post.username}</Col>
+    //                 <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
+    //             </Row>
+    //         </Col>
+    //         <Col span={1}>
+    //
+    //         </Col>
+    //     </Row>
+    // );
 };
 const mapStateToProps = (state) => {
     return {
