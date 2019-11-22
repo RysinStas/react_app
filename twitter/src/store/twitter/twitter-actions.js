@@ -1,33 +1,48 @@
-import uuid from "uuid";
 import axios from "axios";
 import querystring from "querystring";
 
-export const API_URL = '/api/';
+const API_URL = '/api/';
+
+// const getData = (page = 1) => {
+//     axios.get(`${API_URL}posts?page=${page}`,
+//         {
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         }
+//     ).then(response => {
+//         if (response.data.err) {
+//             throw new Error(response.data.err);
+//         }
+//         return response.data
+//     }).catch(err => {
+//         return err
+//     });
+// };
 
 export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
 export const FETCH_POSTS_FAIL = 'FETCH_POSTS_FAIL';
-export const fetchPosts = () => {
+export const fetchPosts = (page = 1) => {
     return (dispatch) => {
-        axios.get(`${API_URL}posts/`,
+        axios.get(`${API_URL}posts?page=${page}`,
             {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             }
         ).then(response => {
-            console.log(response);
-            if (response.data.err) {
-                throw new Error(response.data.err);
+            if (response.data.error) {
+                throw new Error(response.data.error);
             }
             dispatch({
                 type: FETCH_POSTS_SUCCESS,
-                payload : {posts: response.data.data}
+                payload : {data: response.data}
             });
-        })
-        .catch(err => {
+        }).catch(error => {
+            console.log(error);
             dispatch({
                 type: FETCH_POSTS_FAIL,
-                payload: {err}
+                payload: {error}
             });
         });
     }
@@ -37,14 +52,7 @@ export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAIL = 'ADD_POST_FAIL';
 export const addPost = (content, username) => {
     return (dispatch) => {
-        const post = {
-            // post_id: uuid.v4(),
-            content: content,
-            // username: username,
-            // created_at: Date.now()
-        };
         axios.post(`${API_URL}posts/`,
-            // querystring.stringify(post),
             {
                 content: content
             },
@@ -54,9 +62,8 @@ export const addPost = (content, username) => {
                 }
             }
         ).then(response => {
-            console.log(response);
-            if (response.data.err) {
-                throw new Error(response.data.err);
+            if (response.data.error) {
+                throw new Error(response.data.error);
             }
             const post = {
                 id: response.data.id,
@@ -68,18 +75,16 @@ export const addPost = (content, username) => {
                 type: ADD_POST_SUCCESS,
                 payload: {post}
             });
-        })
-        .catch(err => {
-            console.log(err);
+        }).catch(error => {
             dispatch({
                 type: ADD_POST_FAIL,
-                payload: {err}
+                payload: {error}
             });
         })
     }
 };
 
-export const DELETE_POST = 'DELETE_POST';
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
 export const DELETE_POST_FAIL = 'DELETE_POST_FAIL';
 export const deletePost = (post) => {
     return (dispatch) => {
@@ -94,19 +99,19 @@ export const deletePost = (post) => {
                 throw new Error(response.data.error);
             }
             dispatch({
-                type: DELETE_POST,
+                type: DELETE_POST_SUCCESS,
                 payload : {post}
             });
-        }).catch(err => {
+        }).catch(error => {
             dispatch({
                 type: DELETE_POST_FAIL,
-                payload: {err}
+                payload: {error}
             });
         })
     };
 };
 
-export const UPDATE_POST = 'UPDATE_POST';
+export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
 export const UPDATE_POST_FAIL = 'UPDATE_POST_FAIL';
 export const updatePost = (post, newContent) => {
     return (dispatch) => {
@@ -124,20 +129,18 @@ export const updatePost = (post, newContent) => {
                 throw new Error(response.data.error);
             }
             dispatch({
-                type: UPDATE_POST,
-                payload : {post}
+                type: UPDATE_POST_SUCCESS,
+                payload : {post: response.data}
             });
-        }).catch(err => {
+        }).catch(error => {
             dispatch({
                 type: UPDATE_POST_FAIL,
-                payload: {err}
+                payload: {error}
             });
         })
     };
 };
 
-
-export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
 export const USER_LOGIN_FAIL = 'USER_LOGIN_FAIL';
@@ -158,19 +161,18 @@ export const userLogin = (credentials) => {
                 querystring.stringify(credentials),config
             )
                 .then(response => {
-                    if (response.data.err) {
-                        throw new Error(response.data.err);
+                    if (response.data.error) {
+                        throw new Error(response.data.error);
                     }
                     dispatch ({
                         type: USER_LOGIN_SUCCESS,
                         payload : {username: credentials.username}
                     });
-                })
-                .catch(err => {
-                    console.log(err);
+                }).catch(error => {
+                    console.log(error);
                     dispatch ({
                         type: USER_LOGIN_FAIL,
-                        payload : {err}
+                        payload : {error}
                     });
                 })
         }, 1000);
@@ -205,19 +207,19 @@ export const userRegistration = (userData) => {
                 querystring.stringify(userData),config
             )
                 .then(response => {
-                    if (response.data.err) {
-                        throw new Error(response.data.err);
+                    if (response.data.error) {
+                        throw new Error(response.data.error);
                     }
                     dispatch ({
                         type: USER_REGISTER_SUCCESS,
                         payload : {username: userData.username}
                     });
                 })
-                .catch(err => {
-                    console.log(err);
+                .catch(error => {
+                    console.log(error);
                     dispatch ({
                         type: USER_REGISTER_FAIL,
-                        payload : {err}
+                        payload : {error}
                     });
                 })
         }, 1000);

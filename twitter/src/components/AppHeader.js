@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Navigation from "./Navigation";
+import NavigationMenu from "./NavigationMenu";
+import {Alert} from "antd";
+import {connect} from "react-redux";
 
 const Title = styled.h1`
     text-align: center;
@@ -11,14 +13,27 @@ const HeaderWrapper = styled.div`
     margin-bottom: 30px;
 `;
 
-
-const AppHeader = () => {
+const AppHeader = ({error}) => {
     return  (
         <HeaderWrapper>
+            { error.length !== 0 &&
+                <Alert
+                    message="Error"
+                    description={error.toString()}
+                    type="error"
+                    showIcon
+                />
+            }
             <Title>App</Title>
-            <Navigation />
+            <NavigationMenu />
         </HeaderWrapper>
     );
 };
 
-export default AppHeader;
+const mapStateToProps = (state) => {
+    return {
+        error: state.feed.error
+    }
+};
+
+export default connect(mapStateToProps)(AppHeader);

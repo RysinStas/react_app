@@ -27,6 +27,7 @@ const PostAddForm = (props) => {
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 props.addPost(values.content, props.username);
+                props.fetchPosts(props.current_page);
                 props.form.resetFields();
             }
         });
@@ -60,7 +61,7 @@ const PostAddForm = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.feed.post,
+        current_page: state.feed.current_page,
         username: state.auth.username
     }
 };

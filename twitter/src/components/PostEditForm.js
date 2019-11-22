@@ -27,7 +27,8 @@ const PostEditForm = (props) => {
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 // props.addPost(values.content, props.username);
-                props.updatePost(props.post, values.content)
+                props.updatePost(props.post, values.content);
+                props.showEditForm();
                 // console.log(values.content, props.username);
                 // props.form.resetFields();
             }
@@ -39,7 +40,7 @@ const PostEditForm = (props) => {
     return (
         <Form
             onSubmit={onFormSubmit}>
-            <Form.Item>
+            <Form.Item style={{ marginBottom: 0 }}>
                 {getFieldDecorator('content', {
                     rules: [{ required: true, message: 'Please input post content', whitespace: true, min: 1 }],
                     initialValue: props.post.content
@@ -53,7 +54,7 @@ const PostEditForm = (props) => {
                     </TextArea>
                 )}
             </Form.Item>
-            <Form.Item style={{ textAlign: 'center' }}>
+            <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
                 <Button type="primary" htmlType="submit">Change Post</Button>
             </Form.Item>
         </Form>

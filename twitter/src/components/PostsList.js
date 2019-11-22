@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import Post from "./Post";
-
 import {connect} from "react-redux";
 
 const PostsListItem = styled.div`
     margin-bottom: .25rem;
-    padding: .75rem 1.25rem;      
+    padding: 12px;      
     overflow: auto;  
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.125);
@@ -16,7 +15,7 @@ const PostsListItem = styled.div`
 const PostsList = ({posts}) => {
 
     return (
-        <div>{posts.map( (post) => {
+        <div>{posts.data.map( (post) => {
             return (
                 <PostsListItem key={post.id}>
                     <Post post={post} />
@@ -29,7 +28,7 @@ const PostsList = ({posts}) => {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.feed.posts
+        posts: state.feed
     }
 };
 

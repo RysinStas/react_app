@@ -3,7 +3,7 @@ import { Menu, Icon } from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
-class Navigation extends React.Component {
+class NavigationMenu extends React.Component {
 
     render() {
         const {location, username} = this.props;
@@ -51,4 +51,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(withRouter(Navigation));
+export default connect(mapStateToProps)(withRouter(NavigationMenu));

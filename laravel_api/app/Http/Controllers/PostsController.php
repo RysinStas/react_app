@@ -15,7 +15,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return Post::paginate(5);
+        return Post::orderBy('id', 'desc')
+            ->paginate(5);
     }
 
     /**

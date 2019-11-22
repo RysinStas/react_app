@@ -13,41 +13,84 @@ const PostContent = styled.div`
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-    font-size: small;
+    font-size: 15px;
     overflow: auto;
     max-height: 500px;
     white-space: pre-line;   
 `;
 
-const Post = ({post, deletePost, username}) => {
+const PostInfo = styled.div`
+    font-size: 10px;
+    overflow: auto;     
+`;
+
+const ButtonWrapper = styled.div`
+    margin: 5px 0;  
+`;
+
+const PostEditFormWrapper = styled.div`
+    padding: 15px 15px 0 ;   
+`;
+
+class  Post extends React.Component {
     // if (username===post.username) {
+    state = {
+        editFormShow: false
+    };
+
+    showEditForm = () => {
+        this.setState({
+            editFormShow: !this.state.editFormShow
+        })
+    };
+
+    postDeleteHandler = () => {
+        const {post, deletePost, fetchPosts} = this.props;
+        deletePost(post);
+        fetchPosts();
+    };
+
+    render() {
+        const {post} = this.props;
         return (
             <div>
-                <Row type="flex" align="bottom" gutter={8}>
-                    <Col span={23}>
+                <Row type="flex" align="bottom">
+                    <Col span={23} style={{paddingRight: '10px'}}>
                         <Row>
                             <PostContent>{post.content}</PostContent>
-                            <Col span={8}>created by {post.username}</Col>
-                            <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
+                            <PostInfo>
+                                <Col span={8}>created by admin</Col>
+                                <Col span={8} offset={8} style={{textAlign:'right'}}>{ moment(post.updated_at).format('LLL')}</Col>
+                            </PostInfo>
                         </Row>
                     </Col>
                     <Col span={1}>
-                        <Button type="danger" size="small" icon="delete"
-                                onClick={() => deletePost(post)}>
-                        </Button>
-                        <Button type="primary" size="small" icon="edit"
-                                onClick={() => console.log(post)}>
-                        </Button>
+                        <ButtonWrapper>
+                            <Button type="primary" size="small" icon="edit"
+                                    onClick={this.showEditForm}>
+                            </Button>
+                        </ButtonWrapper>
+                        <ButtonWrapper>
+                            <Button type="danger" size="small" icon="delete"
+                                    onClick={this.postDeleteHandler}>
+                            </Button>
+                        </ButtonWrapper>
                     </Col>
                 </Row>
-                <Row type="flex" align="bottom" gutter={8}>
-                    <Col span={23}>
-                        <PostEditForm post={post}/>
-                    </Col>
-                </Row>
+                { this.state.editFormShow &&
+                    <Row type="flex" align="bottom">
+                        <Col span={23}>
+                            <PostEditFormWrapper>
+                                <PostEditForm post={post} showEditForm ={this.showEditForm}/>
+                            </PostEditFormWrapper>
+                        </Col>
+                    </Row>
+                }
             </div>
 
         );
+    }
+
     // }
     // return (
     //     <Row type="flex" align="bottom" gutter={8}>

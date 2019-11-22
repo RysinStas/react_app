@@ -1,16 +1,21 @@
 import {
     FETCH_POSTS_SUCCESS,
     FETCH_POSTS_FAIL,
-    DELETE_POST,
+    DELETE_POST_SUCCESS,
     DELETE_POST_FAIL,
     ADD_POST_SUCCESS,
     ADD_POST_FAIL,
-    UPDATE_POST,
+    UPDATE_POST_SUCCESS,
     UPDATE_POST_FAIL
 } from "./twitter-actions";
 
 const initialState = {
-    posts: []
+    current_page: 1,
+    data: [],
+    per_page: 5,
+    total: 0,
+    error: [],
+    loading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -18,31 +23,40 @@ const reducer = (state = initialState, action) => {
         case FETCH_POSTS_SUCCESS:
             return {
                 ...state,
-                posts: action.payload.posts
+                ...action.payload.data,
+                error: [],
+                loading: false
             };
         case ADD_POST_SUCCESS:
             return {
                 ...state,
-                posts: [...state.posts, action.payload.post]
+                error: [],
+                loading: false
             };
-        case  FETCH_POSTS_FAIL:
-        case  ADD_POST_FAIL:
-        case DELETE_POST_FAIL:
-        case UPDATE_POST_FAIL:
-            // console.log(action.payload.err);
-            return state;
-        case DELETE_POST:
+        case DELETE_POST_SUCCESS:
             return {
                 ...state,
-                posts: state.posts.filter((post) => post.id !== action.payload.post.id)
+                error: [],
+                loading: false
             };
-        case UPDATE_POST:
-            // return {
-            //     ...state,
-            //     posts: state.posts.filter((post) => post.id !== action.payload.post.id)
-            // };
-            console.log(state.posts.map((post) => post.id === action.payload.post.id));
-            return state;
+        case UPDATE_POST_SUCCESS:
+            return {
+                ...state,
+                data: state.data.map((post) => {
+                    if (post.id === action.payload.post.id) {
+                        post = action.payload.post;
+                    }
+                    return post;
+                })
+            };
+        case FETCH_POSTS_FAIL:
+        case ADD_POST_FAIL:
+        case DELETE_POST_FAIL:
+        case UPDATE_POST_FAIL:
+            return {
+                ...state,
+                error: [...state.error , action.payload.error],
+                loading: false};
         default:
             return state;
     }
