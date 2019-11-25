@@ -12,7 +12,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
 
     public function posts() {
-        return $this->hasMany(Post::class, 'user_id', 'id');
+        return $this->hasMany(Post::class);
     }
 
     public function getJWTIdentifier()
