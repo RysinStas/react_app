@@ -15,12 +15,14 @@ class NavigationMenu extends React.Component {
                         Home
                     </Link>
                 </Menu.Item>
-                <Menu.Item key="/feed">
-                    <Link to="/feed">
-                        <Icon type="mail" />
-                        Feed
-                    </Link>
-                </Menu.Item>
+                {username &&
+                    <Menu.Item key="/feed">
+                        <Link to="/feed">
+                            <Icon type="mail"/>
+                            Feed
+                        </Link>
+                    </Menu.Item>
+                }
                 <Menu.Item key="/setting" disabled>
                     <Icon type="setting" />
                     Settings

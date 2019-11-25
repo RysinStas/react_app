@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ['content'];
+    protected $fillable = ['content', 'user_id'];
+
+    public function users() {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

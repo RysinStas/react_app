@@ -12,7 +12,7 @@ const LogoutPage = ({history, userLogout}) => {
         <Row>
             <Col span={8} offset={8} style={{textAlign: 'center'}}>
                 <h3 >Are you sure?</h3>
-                <Button type="primary" onClick={() => history.push('/feed')}>Cancel</Button>
+                <Button type="primary" style={{marginRight: '5px'}} stonClick={() => history.push('/feed')}>Cancel</Button>
                 <Button type="danger" onClick={() => {
                     userLogout();
                     history.push('/feed');

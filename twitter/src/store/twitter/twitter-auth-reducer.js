@@ -11,7 +11,7 @@ import {
 const initialState = {
     loading: false,
     username: 'admin',
-    err: false
+    error: []
 };
 
 const twitterAuthReducer = (state = initialState, action) => {
@@ -32,7 +32,7 @@ const twitterAuthReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                err: false,
+                error: false,
                 username: action.payload.username
             };
         case USER_LOGIN_FAIL:
@@ -40,7 +40,7 @@ const twitterAuthReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                err: action.payload.err
+                error: action.payload.error
             };
         default:
             return state;

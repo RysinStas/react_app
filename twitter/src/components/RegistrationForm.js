@@ -42,6 +42,16 @@ class RegistrationForm extends React.Component {
                     )}
                 </Form.Item>
                 <Form.Item>
+                    {getFieldDecorator('email', {
+                        rules: [{ required: true, message: 'Please input your email!' }],
+                    })(
+                        <Input
+                            prefix={<Icon type="email" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            placeholder="Email"
+                        />,
+                    )}
+                </Form.Item>
+                <Form.Item>
                     {getFieldDecorator('password', {
                         rules: [{ required: true, message: 'Please input your Password!' }],
                     })(
@@ -77,8 +87,11 @@ class RegistrationForm extends React.Component {
     }
 }
 
-const mapStateToProps = ({err, username}) => {
-    return {err, username}
+const mapStateToProps = (state) => {
+    return {
+        username: state.auth.username,
+        error: state.auth.error
+    }
 };
 
 export default connect(mapStateToProps, actions)(Form.create({ name: 'registration' })(RegistrationForm));

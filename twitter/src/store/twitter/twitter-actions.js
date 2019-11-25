@@ -1,24 +1,6 @@
 import axios from "axios";
-import querystring from "querystring";
 
 const API_URL = '/api/';
-
-// const getData = (page = 1) => {
-//     axios.get(`${API_URL}posts?page=${page}`,
-//         {
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-//         }
-//     ).then(response => {
-//         if (response.data.err) {
-//             throw new Error(response.data.err);
-//         }
-//         return response.data
-//     }).catch(err => {
-//         return err
-//     });
-// };
 
 export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
 export const FETCH_POSTS_FAIL = 'FETCH_POSTS_FAIL';
@@ -39,7 +21,6 @@ export const fetchPosts = (page = 1) => {
                 payload : {data: response.data}
             });
         }).catch(error => {
-            console.log(error);
             dispatch({
                 type: FETCH_POSTS_FAIL,
                 payload: {error}
@@ -54,7 +35,8 @@ export const addPost = (content, username) => {
     return (dispatch) => {
         axios.post(`${API_URL}posts/`,
             {
-                content: content
+                content: content,
+                user_id: 1
             },
             {
                 headers: {
@@ -151,16 +133,19 @@ export const userLogin = (credentials) => {
             type: USER_LOGIN_REQUEST,
             payload : {credentials}
         });
-        let config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }
-        };
+
         setTimeout(()=>{
-            axios.post(`${API_URL}login/`,
-                querystring.stringify(credentials),config
-            )
-                .then(response => {
+            axios.post(`${API_URL}login`,
+                {
+                    email : credentials.email,
+                    password : credentials.password
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            ).then(response => {
                     if (response.data.error) {
                         throw new Error(response.data.error);
                     }
@@ -169,7 +154,6 @@ export const userLogin = (credentials) => {
                         payload : {username: credentials.username}
                     });
                 }).catch(error => {
-                    console.log(error);
                     dispatch ({
                         type: USER_LOGIN_FAIL,
                         payload : {error}
@@ -192,19 +176,22 @@ export const USER_REGISTER_SUCCESS = 'USER_REGISTER_SUCCESS';
 export const USER_REGISTER_FAIL = 'USER_REGISTER_FAIL';
 export const userRegistration = (userData) => {
     return (dispatch) => {
-
         dispatch ({
             type: USER_REGISTER_REQUEST
         });
 
-        let config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }
-        };
         setTimeout(()=>{
-            axios.post(`${API_URL}register/`,
-                querystring.stringify(userData),config
+            axios.post(`${API_URL}register`,
+                {
+                    email: userData.email,
+                    password : userData.password,
+                    name : userData.username
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
             )
                 .then(response => {
                     if (response.data.error) {

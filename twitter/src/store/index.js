@@ -19,7 +19,7 @@ const store = createStore(
         }),
     applyMiddleware(
         thunkMiddleware,
-        logMiddleware
+        // logMiddleware
     )
 );
 
