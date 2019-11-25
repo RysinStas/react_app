@@ -26,11 +26,8 @@ const PostEditForm = (props) => {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                // props.addPost(values.content, props.username);
                 props.updatePost(props.post, values.content);
                 props.showEditForm();
-                // console.log(values.content, props.username);
-                // props.form.resetFields();
             }
         });
     };

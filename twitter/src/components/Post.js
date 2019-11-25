@@ -33,7 +33,7 @@ const PostEditFormWrapper = styled.div`
 `;
 
 class  Post extends React.Component {
-    // if (username===post.username) {
+
     state = {
         editFormShow: false
     };
@@ -90,23 +90,7 @@ class  Post extends React.Component {
 
         );
     }
-
-    // }
-    // return (
-    //     <Row type="flex" align="bottom" gutter={8}>
-    //         <Col span={23}>
-    //             <Row>
-    //                 <PostContent>{post.content}</PostContent>
-    //                 <Col span={8}>created by {post.username}</Col>
-    //                 <Col span={8} offset={8}>{ moment(post.created_at).format('LLL')}</Col>
-    //             </Row>
-    //         </Col>
-    //         <Col span={1}>
-    //
-    //         </Col>
-    //     </Row>
-    // );
-};
+}
 const mapStateToProps = (state) => {
     return {
         username : state.auth.username

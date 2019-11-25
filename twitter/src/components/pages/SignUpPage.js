@@ -2,7 +2,6 @@ import {Col, Icon, Row} from "antd";
 import RegistrationForm from "../RegistrationForm";
 import React from "react";
 import {connect} from "react-redux";
-import * as actions from "../../store/twitter/twitter-actions";
 
 const SignUpPage = ({loading}) => {
     return (
@@ -14,7 +13,11 @@ const SignUpPage = ({loading}) => {
     );
 };
 
-const mapStateToProps = ({loading, err, username}) => {
-    return {loading, err, username}
+const mapStateToProps = (state) => {
+    return {
+        loading: state.auth.loading,
+        username: state.auth.username,
+        error: state.auth.error
+    }
 };
-export default connect(mapStateToProps,actions)(SignUpPage);
+export default connect(mapStateToProps)(SignUpPage);
