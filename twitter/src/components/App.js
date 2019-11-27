@@ -2,8 +2,9 @@ import React from 'react';
 
 import styled from "styled-components";
 import {connect} from "react-redux";
-import {fetchPosts} from "../store/twitter/twitter-actions"
+// import {fetchPosts} from "../store/twitter/twitter-actions"
 import Navigation from "./Navigation";
+import {USER_LOGIN_SUCCESS} from "../store/twitter/twitter-actions";
 
 
 const Container = styled.div`
@@ -18,7 +19,17 @@ const Container = styled.div`
 class App extends React.Component {
 
     componentDidMount() {
-        this.props.dispatch(fetchPosts());
+        const username = localStorage.getItem('username');
+        const access_token = localStorage.getItem('access_token');
+        if ( username && access_token) {
+            this.props.dispatch({
+                type: USER_LOGIN_SUCCESS,
+                payload: {
+                    username,
+                    access_token
+                }
+            });
+        }
     }
 
     render() {

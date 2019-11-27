@@ -1,52 +1,38 @@
 import axios from "axios";
 
-const API_URL = '/api/';
+axios.defaults.baseURL = '/api/';
 
+export const FETCH_POSTS_REQUEST = 'FETCH_POSTS_REQUEST';
 export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
-export const FETCH_POSTS_FAIL = 'FETCH_POSTS_FAIL';
+export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
 export const fetchPosts = (page = 1) => {
-    return (dispatch) => {
-        axios.get(`${API_URL}posts?page=${page}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-        ).then(response => {
-            if (response.data.error) {
-                throw new Error(response.data.error);
-            }
+    return async (dispatch) => {
+        try {
+            const response = await axios.get(`posts?page=${page}`);
             dispatch({
                 type: FETCH_POSTS_SUCCESS,
-                payload : {data: response.data}
+                payload: {data: response.data}
             });
-        }).catch(error => {
+        } catch (error) {
             dispatch({
-                type: FETCH_POSTS_FAIL,
+                type: FETCH_POSTS_FAILURE,
                 payload: {error}
             });
-        });
+        }
     }
 };
 
+export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
-export const ADD_POST_FAIL = 'ADD_POST_FAIL';
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 export const addPost = (content, username) => {
-    return (dispatch) => {
-        axios.post(`${API_URL}posts/`,
-            {
-                content: content,
-                user_id: 1
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json'
+    return async (dispatch) => {
+        try {
+            const response = await  axios.post(`posts/`,
+                {
+                    content: content
                 }
-            }
-        ).then(response => {
-            if (response.data.error) {
-                throw new Error(response.data.error);
-            }
+            );
             const post = {
                 id: response.data.id,
                 content: response.data.content,
@@ -57,114 +43,100 @@ export const addPost = (content, username) => {
                 type: ADD_POST_SUCCESS,
                 payload: {post}
             });
-        }).catch(error => {
+        } catch (error) {
             dispatch({
-                type: ADD_POST_FAIL,
+                type: ADD_POST_FAILURE,
                 payload: {error}
             });
-        })
+        }
     }
 };
 
+export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST';
 export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
-export const DELETE_POST_FAIL = 'DELETE_POST_FAIL';
+export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
 export const deletePost = (post) => {
-    return (dispatch) => {
-        axios.delete(`${API_URL}posts/${post.id}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-        ).then(response => {
-            if (response.data.error) {
-                throw new Error(response.data.error);
-            }
+    return async (dispatch) => {
+        try {
+            const response = await axios.delete(`posts/${post.id}`);
+            console.log(response);
             dispatch({
                 type: DELETE_POST_SUCCESS,
-                payload : {post}
+                payload: {post}
             });
-        }).catch(error => {
+        } catch (error) {
             dispatch({
-                type: DELETE_POST_FAIL,
+                type: DELETE_POST_FAILURE,
                 payload: {error}
             });
-        })
+        }
     };
 };
 
+export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
 export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
-export const UPDATE_POST_FAIL = 'UPDATE_POST_FAIL';
+export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
 export const updatePost = (post, newContent) => {
-    return (dispatch) => {
-        axios.put(`${API_URL}posts/${post.id}`,
-            {
-                content : newContent
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json'
+    return async (dispatch) => {
+        try {
+            const response = await  axios.put(`posts/${post.id}`,
+                {
+                    content: newContent
                 }
-            }
-        ).then(response => {
-            if (response.data.error) {
-                throw new Error(response.data.error);
-            }
+            );
+            console.log(response);
             dispatch({
                 type: UPDATE_POST_SUCCESS,
-                payload : {post: response.data}
+                payload: {post: response.data}
             });
-        }).catch(error => {
+        } catch (error) {
             dispatch({
-                type: UPDATE_POST_FAIL,
+                type: UPDATE_POST_FAILURE,
                 payload: {error}
             });
-        })
+        }
     };
 };
 
 export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
-export const USER_LOGIN_FAIL = 'USER_LOGIN_FAIL';
+export const USER_LOGIN_FAILURE = 'USER_LOGIN_FAILURE';
 export const userLogin = (credentials) => {
-    return (dispatch) => {
-        //
+    return  (dispatch) => {
         dispatch ({
-            type: USER_LOGIN_REQUEST,
-            payload : {credentials}
+            type: USER_LOGIN_REQUEST
         });
-
-        setTimeout(()=>{
-            axios.post(`${API_URL}login`,
-                {
-                    email : credentials.email,
-                    password : credentials.password
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
+        setTimeout(async () => {
+            try {
+                const response = await  axios.post(`login`,
+                    {
+                        name: credentials.login,
+                        password: credentials.password
                     }
-                }
-            ).then(response => {
-                    if (response.data.error) {
-                        throw new Error(response.data.error);
+                );
+                localStorage.setItem('username', credentials.login);
+                localStorage.setItem('access_token', response.data.access_token);
+                dispatch({
+                    type: USER_LOGIN_SUCCESS,
+                    payload: {
+                        username: credentials.login,
+                        access_token: response.data.access_token
                     }
-                    dispatch ({
-                        type: USER_LOGIN_SUCCESS,
-                        payload : {username: credentials.username}
-                    });
-                }).catch(error => {
-                    dispatch ({
-                        type: USER_LOGIN_FAIL,
-                        payload : {error}
-                    });
-                })
+                });
+            } catch (error) {
+                dispatch({
+                    type: USER_LOGIN_FAILURE,
+                    payload: {error}
+                });
+            }
         }, 1000);
     };
 };
 
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const userLogout = () => {
+    localStorage.removeItem('username');
+    localStorage.removeItem('access_token');
     return {
         type: USER_LOGOUT
     }
@@ -173,42 +145,35 @@ export const userLogout = () => {
 
 export const USER_REGISTER_REQUEST = 'USER_REGISTER_REQUEST';
 export const USER_REGISTER_SUCCESS = 'USER_REGISTER_SUCCESS';
-export const USER_REGISTER_FAIL = 'USER_REGISTER_FAIL';
+export const USER_REGISTER_FAILURE = 'USER_REGISTER_FAILURE';
 export const userRegistration = (userData) => {
     return (dispatch) => {
-        dispatch ({
+        dispatch({
             type: USER_REGISTER_REQUEST
         });
-
-        setTimeout(()=>{
-            axios.post(`${API_URL}register`,
-                {
-                    email: userData.email,
-                    password : userData.password,
-                    name : userData.username
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
+        setTimeout(async () => {
+            try {
+                const response = await axios.post(`register`,
+                    {
+                        email: userData.email,
+                        password: userData.password,
+                        name: userData.username
                     }
-                }
-            )
-                .then(response => {
-                    if (response.data.error) {
-                        throw new Error(response.data.error);
-                    }
-                    dispatch ({
-                        type: USER_REGISTER_SUCCESS,
-                        payload : {username: userData.username}
-                    });
-                })
-                .catch(error => {
-                    console.log(error);
-                    dispatch ({
-                        type: USER_REGISTER_FAIL,
-                        payload : {error}
-                    });
-                })
+                );
+                localStorage.setItem('username', userData.username);
+                localStorage.setItem('access_token', response.data.access_token);
+                dispatch({
+                    type: USER_REGISTER_SUCCESS,
+                    payload: {
+                        username: userData.username,
+                        access_token: response.data.access_token}
+                });
+            } catch (error) {
+                dispatch({
+                    type: USER_REGISTER_FAILURE,
+                    payload: {error}
+                });
+            }
         }, 1000);
     };
 };

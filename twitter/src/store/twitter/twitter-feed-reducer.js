@@ -1,12 +1,12 @@
 import {
     FETCH_POSTS_SUCCESS,
-    FETCH_POSTS_FAIL,
+    FETCH_POSTS_FAILURE,
     DELETE_POST_SUCCESS,
-    DELETE_POST_FAIL,
+    DELETE_POST_FAILURE,
     ADD_POST_SUCCESS,
-    ADD_POST_FAIL,
+    ADD_POST_FAILURE,
     UPDATE_POST_SUCCESS,
-    UPDATE_POST_FAIL
+    UPDATE_POST_FAILURE, FETCH_POSTS_REQUEST, ADD_POST_REQUEST, DELETE_POST_REQUEST, UPDATE_POST_REQUEST
 } from "./twitter-actions";
 
 const initialState = {
@@ -15,29 +15,37 @@ const initialState = {
     per_page: 5,
     total: 0,
     error: [],
-    loading: false
+    pending: false
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case FETCH_POSTS_REQUEST:
+        case ADD_POST_REQUEST:
+        case DELETE_POST_REQUEST:
+        case UPDATE_POST_REQUEST:
+            return {
+                ...state,
+                pending: true
+            };
         case FETCH_POSTS_SUCCESS:
             return {
                 ...state,
                 ...action.payload.data,
                 error: [],
-                loading: false
+                pending: false
             };
         case ADD_POST_SUCCESS:
             return {
                 ...state,
                 error: [],
-                loading: false
+                pending: false
             };
         case DELETE_POST_SUCCESS:
             return {
                 ...state,
                 error: [],
-                loading: false
+                pending: false
             };
         case UPDATE_POST_SUCCESS:
             return {
@@ -49,14 +57,15 @@ const reducer = (state = initialState, action) => {
                     return post;
                 })
             };
-        case FETCH_POSTS_FAIL:
-        case ADD_POST_FAIL:
-        case DELETE_POST_FAIL:
-        case UPDATE_POST_FAIL:
+        case FETCH_POSTS_FAILURE:
+        case ADD_POST_FAILURE:
+        case DELETE_POST_FAILURE:
+        case UPDATE_POST_FAILURE:
             return {
                 ...state,
                 error: [...state.error , action.payload.error],
-                loading: false};
+                pending: false
+            };
         default:
             return state;
     }

@@ -14,6 +14,7 @@ const HeaderWrapper = styled.div`
 `;
 
 const AppHeader = ({error}) => {
+
     return  (
         <HeaderWrapper>
             { error.length !== 0 &&

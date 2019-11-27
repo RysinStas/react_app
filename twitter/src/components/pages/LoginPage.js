@@ -4,11 +4,11 @@ import React from "react";
 import {connect} from "react-redux";
 import * as actions from "../../store/twitter/twitter-actions";
 
-const LoginPage = ({loading}) => {
+const LoginPage = ({pending}) => {
     return (
         <Row>
             <Col span={8} offset={8}>
-                { loading ? <Icon type="loading" style={{fontSize: '50px', margin: '33.3333%'}}/> : <LoginForm /> }
+                { pending ? <Icon type="loading" style={{fontSize: '50px', margin: '33.3333%'}}/> : <LoginForm /> }
             </Col>
         </Row>
     );
@@ -16,7 +16,7 @@ const LoginPage = ({loading}) => {
 
 const mapStateToProps = (state) => {
     return {
-        loading:  state.auth.loading
+        pending:  state.auth.pending
     }
 };
 export default connect(mapStateToProps,actions)(LoginPage);

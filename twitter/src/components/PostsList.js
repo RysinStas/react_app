@@ -13,7 +13,7 @@ const PostsListItem = styled.div`
 `;
 
 const PostsList = ({posts}) => {
-
+console.log('posts in list', posts);
     return (
         <div>{posts.data.map( (post) => {
             return (

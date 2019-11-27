@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PostsController extends Controller
 {
@@ -15,7 +17,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return Post::orderBy('id', 'desc')
+        return Post::with('user:id,name')
+            ->orderBy('created_at', 'desc')
             ->paginate(5);
     }
 
@@ -37,7 +40,10 @@ class PostsController extends Controller
      */
     public function store(PostRequest $request)
     {
-        return  Post::create($request->post());
+        $user = JWTAuth::parseToken()->authenticate();
+        return  Post::create( ['content' => $request['content'] , 'user_id' => $user->id]);
+
+//        return  Post::create($request->post());
     }
 
     /**
@@ -71,8 +77,10 @@ class PostsController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::with('user:id,name')
+            ->findOrFail($id);
         $post->update($request->post());
+
         return $post;
     }
 

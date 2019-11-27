@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import moment from "moment";
 import styled from "styled-components";
 import {Button, Col, Row} from 'antd';
@@ -32,7 +32,7 @@ const PostEditFormWrapper = styled.div`
     padding: 15px 15px 0 ;   
 `;
 
-class  Post extends React.Component {
+class Post extends React.Component {
 
     state = {
         editFormShow: false
@@ -51,7 +51,7 @@ class  Post extends React.Component {
     };
 
     render() {
-        const {post} = this.props;
+        const {post, username} = this.props;
         return (
             <div>
                 <Row type="flex" align="bottom">
@@ -59,22 +59,26 @@ class  Post extends React.Component {
                         <Row>
                             <PostContent>{post.content}</PostContent>
                             <PostInfo>
-                                <Col span={8}>created by admin</Col>
+                                <Col span={8}>created by {post.user.name}</Col>
                                 <Col span={8} offset={8} style={{textAlign:'right'}}>{ moment(post.updated_at).format('LLL')}</Col>
                             </PostInfo>
                         </Row>
                     </Col>
                     <Col span={1}>
-                        <ButtonWrapper>
-                            <Button type="primary" size="small" icon="edit"
-                                    onClick={this.showEditForm}>
-                            </Button>
-                        </ButtonWrapper>
-                        <ButtonWrapper>
-                            <Button type="danger" size="small" icon="delete"
-                                    onClick={this.postDeleteHandler}>
-                            </Button>
-                        </ButtonWrapper>
+                        {username===post.user.name &&
+                            <Fragment>
+                                <ButtonWrapper>
+                                    <Button type="primary" size="small" icon="edit"
+                                            onClick={this.showEditForm}>
+                                    </Button>
+                                </ButtonWrapper>
+                                <ButtonWrapper>
+                                    <Button type="danger" size="small" icon="delete"
+                                            onClick={this.postDeleteHandler}>
+                                    </Button>
+                                </ButtonWrapper>
+                            </Fragment>
+                        }
                     </Col>
                 </Row>
                 { this.state.editFormShow &&

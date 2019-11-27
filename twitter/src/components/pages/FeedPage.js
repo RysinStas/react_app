@@ -12,35 +12,46 @@ const PaginationStyle = styled.ul`
   text-align: center;
 `;
 
-const FeedPage = ({username, posts, fetchPosts}) => {
-    const handleChange = (page) => {
-        fetchPosts(page);
+class FeedPage extends React.Component {
+
+    componentDidMount() {
+        this.props.fetchPosts();
+    }
+
+    handleChange = (page) => {
+        this.props.fetchPosts(page);
     };
-    if (username) {
+
+    render () {
+        const {username, posts} = this.props;
+        if (username) {
+            return (
+                <div>
+                    <h2>Hello {username}!</h2>
+                    <PostAddForm />
+                    <PostsList />
+                    <PaginationStyle>
+                        <Pagination defaultCurrent={1}
+                                    defaultPageSize={5}
+                                    pageSize={posts.per_page}
+                                    total={posts.total}
+                                    onChange={(page)=>this.handleChange(page)}
+                                    hideOnSinglePage={true}
+                        />
+                    </PaginationStyle>
+                </div>
+            );
+        }
         return (
             <div>
-                <h2>Hello {username}!</h2>
-                <PostAddForm />
+                <h2>Hello! To write a tweet please register or login</h2>
                 <PostsList />
-                <PaginationStyle>
-                    <Pagination defaultCurrent={1}
-                                defaultPageSize={5}
-                                pageSize={posts.per_page}
-                                total={posts.total}
-                                onChange={(page)=>handleChange(page)}
-                                hideOnSinglePage={true}
-                    />
-                </PaginationStyle>
             </div>
         );
     }
-    return (
-        <div>
-            <h2>Hello! To write a tweet please register or login</h2>
-            <PostsList />
-        </div>
-    );
-};
+
+}
+
 const mapStateToProps = (state) =>{
     return {
         username: state.auth.username,
