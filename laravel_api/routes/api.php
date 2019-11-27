@@ -13,14 +13,15 @@ use App\Http\Controllers;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 //Route::resources(['posts' => PostsController::class]);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::resources(['posts' => PostsController::class]);
+    Route::get('/user', 'AuthController@getAuthenticatedUser');
 });
 
 //Route::middleware('auth:api')->resources(['posts' => PostsController::class]);

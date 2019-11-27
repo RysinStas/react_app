@@ -15,14 +15,14 @@ const PostsListItem = styled.div`
 const PostsList = ({posts}) => {
 console.log('posts in list', posts);
     return (
-        <div>{posts.data.map( (post) => {
+        <>{posts.data.map( (post) => {
             return (
                 <PostsListItem key={post.id}>
                     <Post post={post} />
                 </PostsListItem>
             );
         })}
-        </div>
+        </>
     );
 };
 

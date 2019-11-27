@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import moment from "moment";
 import styled from "styled-components";
 import {Button, Col, Row} from 'antd';
@@ -53,7 +53,7 @@ class Post extends React.Component {
     render() {
         const {post, username} = this.props;
         return (
-            <div>
+            <>
                 <Row type="flex" align="bottom">
                     <Col span={23} style={{paddingRight: '10px'}}>
                         <Row>
@@ -66,7 +66,7 @@ class Post extends React.Component {
                     </Col>
                     <Col span={1}>
                         {username===post.user.name &&
-                            <Fragment>
+                            <>
                                 <ButtonWrapper>
                                     <Button type="primary" size="small" icon="edit"
                                             onClick={this.showEditForm}>
@@ -77,7 +77,7 @@ class Post extends React.Component {
                                             onClick={this.postDeleteHandler}>
                                     </Button>
                                 </ButtonWrapper>
-                            </Fragment>
+                            </>
                         }
                     </Col>
                 </Row>
@@ -90,7 +90,7 @@ class Post extends React.Component {
                         </Col>
                     </Row>
                 }
-            </div>
+            </>
 
         );
     }

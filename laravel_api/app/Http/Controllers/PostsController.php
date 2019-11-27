@@ -41,9 +41,9 @@ class PostsController extends Controller
     public function store(PostRequest $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
+//        logger($user->id);
+//        logger($request);
         return  Post::create( ['content' => $request['content'] , 'user_id' => $user->id]);
-
-//        return  Post::create($request->post());
     }
 
     /**
@@ -77,8 +77,7 @@ class PostsController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        $post = Post::with('user:id,name')
-            ->findOrFail($id);
+        $post = Post::with('user:id,name')->findOrFail($id);
         $post->update($request->post());
 
         return $post;
