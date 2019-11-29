@@ -1,11 +1,8 @@
 import React from 'react';
-
 import styled from "styled-components";
 import {connect} from "react-redux";
-// import {fetchPosts} from "../store/twitter/twitter-actions"
 import Navigation from "./Navigation";
-import {USER_LOGIN_SUCCESS} from "../store/twitter/twitter-actions";
-
+import {USER_LOGIN_SUCCESS} from "../store/twitter/sagas";
 
 const Container = styled.div`
     width: 100%;

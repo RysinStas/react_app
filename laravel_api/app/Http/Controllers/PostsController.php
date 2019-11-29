@@ -18,7 +18,7 @@ class PostsController extends Controller
     public function index()
     {
         return Post::with('user:id,name')
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->paginate(5);
     }
 
@@ -41,8 +41,6 @@ class PostsController extends Controller
     public function store(PostRequest $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
-//        logger($user->id);
-//        logger($request);
         return  Post::create( ['content' => $request['content'] , 'user_id' => $user->id]);
     }
 

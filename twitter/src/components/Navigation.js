@@ -1,8 +1,5 @@
 import React from 'react';
-
-import AppHeader from './AppHeader';
 import { Route, Switch , BrowserRouter as Router} from "react-router-dom"
-
 import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
 import FeedPage from "./pages/FeedPage"
@@ -13,7 +10,6 @@ import PrivateRoute from "./PrivateRoute";
 const Navigation = () => {
     return (
         <Router>
-            <AppHeader />
             <Switch>
                 <Route path="/" component={WelcomePage} exact/>
                 <Route path="/login" component={LoginPage}/>

@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {Pagination} from "antd";
 import * as actions from "../../store/twitter/twitter-actions"
 import styled from "styled-components";
+import AppHeader from "../AppHeader";
 
 const PaginationStyle = styled.ul`
   margin: 20px 0;
@@ -26,7 +27,8 @@ class FeedPage extends React.Component {
         const {username, posts} = this.props;
         if (username) {
             return (
-                <div>
+                <>
+                    <AppHeader />
                     <h2>Hello {username}!</h2>
                     <PostAddForm />
                     <PostsList />
@@ -39,14 +41,15 @@ class FeedPage extends React.Component {
                                     hideOnSinglePage={true}
                         />
                     </PaginationStyle>
-                </div>
+                </>
             );
         }
         return (
-            <div>
+            <>
+                <AppHeader />
                 <h2>Hello! To write a tweet please register or login</h2>
                 <PostsList />
-            </div>
+            </>
         );
     }
 

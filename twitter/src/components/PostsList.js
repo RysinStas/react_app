@@ -14,7 +14,7 @@ const PostsListItem = styled.div`
 
 const PostsList = ({posts}) => {
     return (
-        <>{posts.data.map( (post) => {
+        <>{posts.map( (post) => {
             return (
                 <PostsListItem key={post.id}>
                     <Post post={post} />
@@ -27,7 +27,7 @@ const PostsList = ({posts}) => {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.feed
+        posts: state.feed.posts
     }
 };
 

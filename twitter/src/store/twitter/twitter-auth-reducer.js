@@ -1,12 +1,14 @@
 import {
     USER_LOGIN_REQUEST,
+    USER_REGISTER_REQUEST,
+    USER_LOGOUT
+} from "./twitter-actions";
+import {
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAILURE,
-    USER_LOGOUT,
-    USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAILURE
-} from "./twitter-actions";
+} from "./sagas";
 
 const initialState = {
     pending: false,

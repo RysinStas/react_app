@@ -1,22 +1,19 @@
 import {createStore, combineReducers, applyMiddleware, compose} from "redux";
 import twitterFeedReducer from "./twitter/twitter-feed-reducer";
 import twitterAuthReducer from "./twitter/twitter-auth-reducer";
-// import thunkMiddleware from "redux-thunk";
+
 import axios from "axios";
 import createSagaMiddleware from "redux-saga"
-import rootSaga from "./sagas/sagas";
-
-// const logMiddleware = (store) => (next) => (action) => {
-//     console.group(action.type);
-//     console.info('dispatching', action);
-//     let result = next(action);
-//     console.log('next state', store.getState());
-//     console.groupEnd();
-//     return result
-// };
+import rootSaga, {USER_LOGIN_SUCCESS, USER_REGISTER_SUCCESS} from "./twitter/sagas";
+import {USER_LOGIN_REQUEST} from "./twitter/twitter-actions";
 
 const setAuthToken = (store) => (next) => (action) => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
+    if (action.type === USER_LOGIN_REQUEST ) {
+        axios.defaults.baseURL = '/api/';
+    }
+    if (action.type === USER_LOGIN_SUCCESS || action.type === USER_REGISTER_SUCCESS ) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
+    }
     return next(action)
 };
 const composeEnhancers =
@@ -34,8 +31,6 @@ const store = createStore(
     composeEnhancers(applyMiddleware(
         setAuthToken,
         sagaMiddleware
-        // thunkMiddleware,
-        // logMiddleware
     ))
 );
 sagaMiddleware.run(rootSaga);

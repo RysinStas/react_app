@@ -1,4 +1,10 @@
 import {
+    FETCH_POSTS_REQUEST,
+    ADD_POST_REQUEST,
+    DELETE_POST_REQUEST,
+    UPDATE_POST_REQUEST
+} from "./twitter-actions";
+import {
     FETCH_POSTS_SUCCESS,
     FETCH_POSTS_FAILURE,
     DELETE_POST_SUCCESS,
@@ -6,12 +12,12 @@ import {
     ADD_POST_SUCCESS,
     ADD_POST_FAILURE,
     UPDATE_POST_SUCCESS,
-    UPDATE_POST_FAILURE, FETCH_POSTS_REQUEST, ADD_POST_REQUEST, DELETE_POST_REQUEST, UPDATE_POST_REQUEST
-} from "./twitter-actions";
+    UPDATE_POST_FAILURE
+} from "./sagas";
 
 const initialState = {
     current_page: 1,
-    data: [],
+    posts: [],
     per_page: 5,
     total: 0,
     error: [],
@@ -31,8 +37,8 @@ const reducer = (state = initialState, action) => {
         case FETCH_POSTS_SUCCESS:
             return {
                 ...state,
-                ...action.payload.data,
-                error: [],
+                ...action.payload,
+                posts: action.payload.data,
                 pending: false
             };
         case ADD_POST_SUCCESS:
@@ -50,7 +56,7 @@ const reducer = (state = initialState, action) => {
         case UPDATE_POST_SUCCESS:
             return {
                 ...state,
-                data: state.data.map((post) => {
+                posts: state.data.map((post) => {
                     if (post.id === action.payload.post.id) {
                         post = action.payload.post;
                     }

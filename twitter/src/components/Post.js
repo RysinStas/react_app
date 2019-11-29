@@ -8,7 +8,6 @@ import * as actions from '../store/twitter/twitter-actions';
 import {connect} from "react-redux";
 import PostEditForm from "./PostEditForm";
 
-
 const PostContent = styled.div`
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
