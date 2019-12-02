@@ -47,7 +47,7 @@ const twitterAuthReducer = (state = initialState, action) => {
                 ...state,
                 pending: false,
                 access_token: '',
-                error: action.payload.error
+                error: [...state.error , action.payload.error]
             };
         default:
             return state;

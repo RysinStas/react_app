@@ -13,18 +13,21 @@ const HeaderWrapper = styled.div`
     margin-bottom: 30px;
 `;
 
-const AppHeader = ({error}) => {
-
+const AppHeader = ({errors}) => {
     return  (
         <HeaderWrapper>
-            { error.length !== 0 &&
-                <Alert
-                    message="Error"
-                    description={error.toString()}
-                    type="error"
-                    showIcon
-                />
-            }
+            {errors.map( (error, i) => {
+                return (
+                    <Alert
+                        key={i}
+                        message="Error"
+                        description={error.message}
+                        type="error"
+                        showIcon
+                        style={{marginBottom: '5px'}}
+                    />
+                );
+            })}
             <Title>App</Title>
             <NavigationMenu />
         </HeaderWrapper>
@@ -33,7 +36,7 @@ const AppHeader = ({error}) => {
 
 const mapStateToProps = (state) => {
     return {
-        error: state.feed.error
+        errors: [...state.feed.error, ...state.auth.error]
     }
 };
 

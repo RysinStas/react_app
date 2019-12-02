@@ -1,7 +1,3 @@
-import axios from "axios";
-
-axios.defaults.baseURL = '/api/';
-
 export const FETCH_POSTS_REQUEST = 'FETCH_POSTS_REQUEST';
 export const fetchPosts = (page = 1) => {
     return ({
