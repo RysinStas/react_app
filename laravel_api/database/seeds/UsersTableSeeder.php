@@ -14,15 +14,15 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
+        factory(User::class)->create([
             'name' => 'admin',
             'email' => 'admin@user.com',
             'password' => 'qwerty'
-        ]);
+        ])->posts()->saveMany(factory(Post::class, 3)->make());
 
         factory(User::class, 5)->create()
             ->each(function ($user) {
-                $user->posts()->save(factory(Post::class)->make());
+                $user->posts()->saveMany(factory(Post::class, 3)->make());
             });
     }
 }
