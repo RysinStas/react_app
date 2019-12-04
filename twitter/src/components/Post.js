@@ -44,9 +44,8 @@ class Post extends React.Component {
     };
 
     postDeleteHandler = () => {
-        const {post, deletePost, fetchPosts} = this.props;
+        const {post, deletePost} = this.props;
         deletePost(post);
-        fetchPosts();
     };
 
     render() {
@@ -96,7 +95,7 @@ class Post extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-        username : state.auth.username
+        username : state.auth.data.username
     }
 };
 

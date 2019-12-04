@@ -2,7 +2,6 @@ import {Col, Row, Icon} from "antd";
 import LoginForm from "../LoginForm";
 import React from "react";
 import {connect} from "react-redux";
-import * as actions from "../../store/twitter/twitter-actions";
 import AppHeader from "../AppHeader";
 
 const LoginPage = ({pending}) => {
@@ -23,4 +22,4 @@ const mapStateToProps = (state) => {
         pending:  state.auth.pending
     }
 };
-export default connect(mapStateToProps,actions)(LoginPage);
+export default connect(mapStateToProps)(LoginPage);

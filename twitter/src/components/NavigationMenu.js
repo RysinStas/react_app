@@ -49,7 +49,7 @@ class NavigationMenu extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        username: state.auth.username
+        username: state.auth.data.username
     }
 };
 

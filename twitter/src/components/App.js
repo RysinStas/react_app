@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import {connect} from "react-redux";
 import Navigation from "./Navigation";
-import {USER_LOGIN_SUCCESS} from "../store/twitter/sagas";
+import * as actions from "../store/auth/auth-actions"
 
 const Container = styled.div`
     width: 100%;
@@ -14,19 +14,8 @@ const Container = styled.div`
 `;
 
 class App extends React.Component {
-
     componentDidMount() {
-        const username = localStorage.getItem('username');
-        const access_token = localStorage.getItem('access_token');
-        if ( username && access_token) {
-            this.props.dispatch({
-                type: USER_LOGIN_SUCCESS,
-                payload: {
-                    username,
-                    access_token
-                }
-            });
-        }
+        this.props.appInit();
     }
 
     render() {
@@ -38,4 +27,4 @@ class App extends React.Component {
     }
 }
 
-export default connect()(App);
+export default connect(null, actions)(App);

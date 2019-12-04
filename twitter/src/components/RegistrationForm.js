@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Icon, Input, Button} from 'antd';
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import * as actions from '../store/twitter/twitter-actions';
+import * as actions from '../store/auth/auth-actions';
 
 class RegistrationForm extends React.Component {
     handleSubmit = e => {
@@ -24,7 +24,7 @@ class RegistrationForm extends React.Component {
     };
 
     render() {
-        const { err, username } = this.props;
+        const { username } = this.props;
         const { getFieldDecorator } = this.props.form;
         if (username) {
             return  <Redirect to="/feed" />
@@ -74,9 +74,6 @@ class RegistrationForm extends React.Component {
                         />,
                     )}
                 </Form.Item>
-                <Form.Item style={{color: 'red'}}>
-                    { err ? `${err}` : ''}
-                </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="login-form-button" style={{'width' : '100%'}}>
                         Sign up
@@ -89,8 +86,7 @@ class RegistrationForm extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        username: state.auth.username,
-        error: state.auth.error
+        username: state.auth.data.username
     }
 };
 

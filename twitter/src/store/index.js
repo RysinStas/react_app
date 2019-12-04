@@ -1,20 +1,27 @@
 import {createStore, combineReducers, applyMiddleware, compose} from "redux";
 import twitterFeedReducer from "./twitter/twitter-feed-reducer";
-import twitterAuthReducer from "./twitter/twitter-auth-reducer";
+import authReducer from "./auth/auth-reducer";
 import axios from "axios";
 import createSagaMiddleware from "redux-saga"
-import rootSaga, {USER_LOGIN_SUCCESS, USER_REGISTER_SUCCESS} from "./twitter/sagas";
-import {USER_LOGIN_REQUEST, USER_REGISTER_REQUEST} from "./twitter/twitter-actions";
+import rootSaga from "./sagas";
+import {
+    APP_INIT,
+    DELETE_AUTH_HEADER,
+    SET_AUTH_HEADER
+} from "./auth/auth-actions";
+
+const axiosInstance = axios.create({
+    baseURL: 'http://127.0.0.1:8000/api/',
+});
 
 const setAxiosDefaults = (store) => (next) => (action) => {
     switch (action.type) {
-        case USER_LOGIN_REQUEST:
-        case USER_REGISTER_REQUEST:
-            axios.defaults.baseURL = '/api/';
+        case SET_AUTH_HEADER:
+        case APP_INIT:
+            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${action.payload.access_token}`;
             break;
-        case USER_LOGIN_SUCCESS:
-        case USER_REGISTER_SUCCESS:
-            axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
+        case DELETE_AUTH_HEADER:
+            delete axiosInstance.defaults.headers.common['Authorization'];
             break;
         default:
             break;
@@ -31,13 +38,17 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     combineReducers({
             feed : twitterFeedReducer,
-            auth: twitterAuthReducer
+            auth: authReducer
         }),
     composeEnhancers(applyMiddleware(
         setAxiosDefaults,
         sagaMiddleware
     ))
 );
-sagaMiddleware.run(rootSaga);
+
+sagaMiddleware.run(
+    rootSaga,
+    axiosInstance
+);
 
 export default store;

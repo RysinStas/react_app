@@ -35,6 +35,7 @@ class FeedPage extends React.Component {
                     <PaginationStyle>
                         <Pagination defaultCurrent={1}
                                     defaultPageSize={5}
+                                    current={posts.current_page}
                                     pageSize={posts.per_page}
                                     total={posts.total}
                                     onChange={(page)=>this.handleChange(page)}
@@ -57,8 +58,8 @@ class FeedPage extends React.Component {
 
 const mapStateToProps = (state) =>{
     return {
-        username: state.auth.username,
-        posts: state.feed
+        username: state.auth.data.username,
+        posts: state.feed.data
     }
 };
-export default connect(mapStateToProps,actions)(FeedPage);
+export default connect(mapStateToProps, actions)(FeedPage);

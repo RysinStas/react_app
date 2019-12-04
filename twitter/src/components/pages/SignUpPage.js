@@ -19,9 +19,7 @@ const SignUpPage = ({pending}) => {
 
 const mapStateToProps = (state) => {
     return {
-        pending: state.auth.pending,
-        username: state.auth.username,
-        error: state.auth.error
+        pending: state.auth.pending
     }
 };
 export default connect(mapStateToProps)(SignUpPage);
