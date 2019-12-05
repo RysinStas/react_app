@@ -3,6 +3,7 @@ import {createDriver} from "redux-saga-requests-axios";
 import {ADD_POST, DELETE_POST, fetchPosts} from "./twitter/twitter-actions";
 import {put} from "redux-saga/effects";
 import {deleteAuthHeader, setAuthHeader, USER_LOGIN, USER_LOGOUT, USER_REGISTER} from "./auth/auth-actions";
+import axios from "axios";
 
 function* onSuccessSaga(response, action) {
     switch (action.type) {
@@ -27,9 +28,9 @@ function* onSuccessSaga(response, action) {
     return response;
 }
 
-export default function* rootSaga(axiosInstance) {
+export default function* rootSaga() {
     yield createRequestInstance({
-        driver: createDriver(axiosInstance),
+        driver: createDriver(axios),
         onSuccess: onSuccessSaga,
     });
     yield watchRequests()

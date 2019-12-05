@@ -51,14 +51,15 @@ export const userRegistration = (userData) => {
 
 export const APP_INIT = 'APP_INIT';
 export const appInit = () => {
+    const account = JSON.parse(localStorage.getItem('account'));
     return ({
         type: APP_INIT,
-        payload: JSON.parse(localStorage.getItem('account'))
+        payload: account ? account : {access_token: ''}
     })
 };
 
 export const SET_AUTH_HEADER = 'SET_AUTH_HEADER';
-export const setAuthHeader = (access_token ) => {
+export const setAuthHeader = (access_token) => {
     return ({
         type: SET_AUTH_HEADER,
         payload: {access_token}

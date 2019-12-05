@@ -27,7 +27,7 @@ const authReducer = requestsReducer({
                 }
             },
             local: true,
-        }
+        },
     }
 });
 

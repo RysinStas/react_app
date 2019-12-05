@@ -40,9 +40,9 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }
 
-    public function getAuthenticatedUser()
+    public function getAuthenticatedUser(Request $request)
     {
-        $user = JWTAuth::parseToken()->authenticate();
+        $user = $request->user();
         if (!$user) {
             return response()->json(['error' => 'User not found'], 401);
         }

@@ -10,18 +10,15 @@ import {
     SET_AUTH_HEADER
 } from "./auth/auth-actions";
 
-const axiosInstance = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/',
-});
-
 const setAxiosDefaults = (store) => (next) => (action) => {
     switch (action.type) {
         case SET_AUTH_HEADER:
         case APP_INIT:
-            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${action.payload.access_token}`;
+            axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
+            axios.defaults.headers.common['Authorization'] = `Bearer ${action.payload.access_token}`;
             break;
         case DELETE_AUTH_HEADER:
-            delete axiosInstance.defaults.headers.common['Authorization'];
+            delete axios.defaults.headers.common['Authorization'];
             break;
         default:
             break;
@@ -47,8 +44,7 @@ const store = createStore(
 );
 
 sagaMiddleware.run(
-    rootSaga,
-    axiosInstance
+    rootSaga
 );
 
 export default store;
