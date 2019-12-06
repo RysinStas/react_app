@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import NavigationMenu from "./NavigationMenu";
+import {connect} from "react-redux";
 
 const Title = styled.h1`
     text-align: center;
@@ -12,7 +13,6 @@ const HeaderWrapper = styled.div`
 `;
 
 const AppHeader = () => {
-
     return  (
         <HeaderWrapper>
             <Title>App</Title>

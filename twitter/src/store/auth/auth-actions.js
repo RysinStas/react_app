@@ -66,15 +66,11 @@ export const fetchUser = () =>  {
 };
 
 export const APP_INIT = 'APP_INIT';
-export const appInit = () => (dispatch) => {
+export const appInit = () => {
     const account = JSON.parse(localStorage.getItem('account'));
-    // console.log(account);
-    // if (account) {
-    //     dispatch (setAuthHeader(account.access_token))
-    // }
-    dispatch ({
+    return ({
         type: APP_INIT,
-        payload: account ? account : ''
+        payload: account ? account : {}
     })
 };
 

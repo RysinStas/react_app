@@ -22,9 +22,11 @@ use App\Http\Controllers;
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::resources(['posts' => PostsController::class]);
     Route::get('/user', 'AuthController@getAuthenticatedUser');
+    Route::post('/refresh', 'AuthController@refresh');
 });
 
 //Route::middleware('auth:api')->resources(['posts' => PostsController::class]);
 Route::post('/register', 'AuthController@register');
 Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
+

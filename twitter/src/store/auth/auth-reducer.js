@@ -17,7 +17,8 @@ const authReducer = (state = initialState, action) => {
         case USER_REGISTER:
             return {
                 ...state,
-                pending: true
+                pending: true,
+                error: []
             };
         case success(USER_LOGIN):
         case success(USER_REGISTER):
@@ -45,7 +46,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 pending: false,
-                error: action.payload.error
+                error: [...state.error, action.payload.message]
             };
         case APP_INIT:
             return {
