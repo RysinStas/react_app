@@ -1,6 +1,6 @@
 export const USER_LOGIN = 'USER_LOGIN';
-export const userLogin = (credentials) => {
-    return ({
+export const userLogin = (credentials) => (dispatch) => {
+    dispatch ({
         type: USER_LOGIN,
         payload: {
             request: {
@@ -12,7 +12,6 @@ export const userLogin = (credentials) => {
                 }
             },
         },
-        meta: credentials
     })
 };
 
@@ -49,12 +48,33 @@ export const userRegistration = (userData) => {
     })
 };
 
-export const APP_INIT = 'APP_INIT';
-export const appInit = () => {
-    const account = JSON.parse(localStorage.getItem('account'));
+export const FETCH_USER = 'FETCH_USER';
+export const fetchUser = () =>  {
+
     return ({
+        type: FETCH_USER,
+        payload: {
+            request: {
+                url: `user`,
+                method: 'get'
+            },
+        },
+        meta: {
+            asPromise: true,
+        },
+    })
+};
+
+export const APP_INIT = 'APP_INIT';
+export const appInit = () => (dispatch) => {
+    const account = JSON.parse(localStorage.getItem('account'));
+    // console.log(account);
+    // if (account) {
+    //     dispatch (setAuthHeader(account.access_token))
+    // }
+    dispatch ({
         type: APP_INIT,
-        payload: account ? account : {access_token: ''}
+        payload: account ? account : ''
     })
 };
 

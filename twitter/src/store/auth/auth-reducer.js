@@ -1,34 +1,60 @@
-import {requestsReducer} from "redux-saga-requests";
-import {APP_INIT, USER_LOGIN, USER_LOGOUT, USER_REGISTER} from "./auth-actions";
+import {
+    APP_INIT, FETCH_USER,
+    USER_LOGIN, USER_LOGOUT, USER_REGISTER
+} from "./auth-actions";
+import {success, error} from "redux-saga-requests";
 
-const authReducer = requestsReducer({
-    actionType: USER_LOGIN,
-    multiple: true,
-    onSuccess:  (state, action) => {
-        return { ...state,
-            data: {...action.payload.data, username: action.meta.username},
-            pending: 0}
-    }  ,
-    mutations: {
-        [USER_REGISTER]: {
-            updateData: (state, action) => {
-                return {
-                ...state.data, ...action.payload.data, username: action.meta.username
-                }
-            },
-        },
-        [USER_LOGOUT]: {
-            updateData: (state, action) => []
-        },
-        [APP_INIT]: {
-            updateData: (state, action) => {
-                return {
-                    ...state.data, ...action.payload
-                }
-            },
-            local: true,
-        },
+const initialState = {
+    account: {},
+    pending: false,
+    error: []
+};
+
+const authReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case USER_LOGOUT:
+        case USER_LOGIN:
+        case USER_REGISTER:
+            return {
+                ...state,
+                pending: true
+            };
+        case success(USER_LOGIN):
+        case success(USER_REGISTER):
+            return {
+                ...state,
+                pending: false,
+                error: [],
+                account: action.payload.data
+            };
+        case success(FETCH_USER):
+            return {
+                ...state,
+                pending: false,
+                error: [],
+                account: {...state.account, ...action.payload.data}
+            };
+        case success(USER_LOGOUT):
+            return {
+                ...state,
+                ...initialState
+            };
+        case error(USER_LOGIN):
+        case error(USER_REGISTER):
+        case error(USER_LOGOUT):
+            return {
+                ...state,
+                pending: false,
+                error: action.payload.error
+            };
+        case APP_INIT:
+            return {
+                ...state,
+                account: action.payload
+            };
+        default:
+            return state;
     }
-});
+};
 
 export default authReducer;

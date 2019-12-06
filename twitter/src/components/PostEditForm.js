@@ -60,8 +60,8 @@ const PostEditForm = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.feed.data.data,
-        username: state.auth.data.username
+        posts: state.feed.data,
+        account: state.auth.account
     }
 };
 

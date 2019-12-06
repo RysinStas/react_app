@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 class NavigationMenu extends React.Component {
 
     render() {
-        const {location, username} = this.props;
+        const {location, account} = this.props;
         return (
             <Menu onClick={this.handleClick} selectedKeys={[location.pathname]} mode="horizontal">
                 <Menu.Item key="/">
@@ -15,7 +15,7 @@ class NavigationMenu extends React.Component {
                         Home
                     </Link>
                 </Menu.Item>
-                {username &&
+                {account.name &&
                     <Menu.Item key="/feed">
                         <Link to="/feed">
                             <Icon type="mail"/>
@@ -27,7 +27,7 @@ class NavigationMenu extends React.Component {
                     <Icon type="setting" />
                     Settings
                 </Menu.Item>
-                { !username ?
+                { !account.name ?
                     <Menu.Item key="/login" style={{float: 'right'}}>
                         <Link to="/login">
                             <Icon type="login" />
@@ -49,7 +49,7 @@ class NavigationMenu extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        username: state.auth.data.username
+        account: state.auth.account
     }
 };
 

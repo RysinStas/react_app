@@ -1,30 +1,68 @@
-import {requestsReducer} from "redux-saga-requests";
 import {ADD_POST, DELETE_POST, FETCH_POSTS, UPDATE_POST} from "./twitter-actions";
+import {success, error} from "redux-saga-requests";
 
-const twitterFeedReducer = requestsReducer({
-    actionType: FETCH_POSTS,
-    multiple: true,
-    getDefaultData: () => ({data: [], current_page:1, per_page: 5, total: 0}),
-    mutations: {
-        [UPDATE_POST]: {
-            updateData: (state, action) => {
-                return {
-                    ...state.data, data: state.data.data.map((post) => {
-                        if (post.id === action.meta.post.id) {
-                            post = action.payload.response.data;
-                        }
-                        return post;
-                    })
-                }
-            },
-        },
-        [DELETE_POST]: {
-            updateData: (state, action) => state.data,
-        },
-        [ADD_POST]: {
-            updateData: (state, action) => state.data,
-        },
+const initialState = {
+    posts: [],
+    current_page: 1,
+    per_page: 5,
+    total: 0,
+    pending: false,
+    error: [],
+};
+
+const twitterFeedReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case FETCH_POSTS:
+        case ADD_POST:
+        case DELETE_POST:
+        case UPDATE_POST:
+            return {
+                ...state,
+                pending: true
+            };
+        case success(FETCH_POSTS):
+            const { data: posts, current_page, per_page, total} = action.payload.data;
+            return {
+                ...state,
+                current_page, per_page, total,
+                posts,
+                error: [],
+                pending: false
+            };
+        case success(ADD_POST):
+            return {
+                ...state,
+                error: [],
+                pending: false
+            };
+        case success(DELETE_POST):
+            return {
+                ...state,
+                error: [],
+                pending: false
+            };
+        case success(UPDATE_POST):
+            return {
+                ...state,
+                posts: state.posts.map((post) => {
+                    if (post.id === action.meta.post.id) {
+                        post = action.payload.response.data;
+                    }
+                    return post;
+                })
+            };
+        case error(FETCH_POSTS):
+        case error(ADD_POST):
+        case error(DELETE_POST):
+        case error(UPDATE_POST):
+            return {
+                ...state,
+                error: [...state.error , action.payload.error],
+                pending: false
+            };
+        default:
+            return state;
     }
-});
+};
 
 export default twitterFeedReducer;

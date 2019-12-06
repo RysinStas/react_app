@@ -27,7 +27,7 @@ const PostsList = ({posts}) => {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.feed.data.data
+        posts: state.feed.posts
     }
 };
 

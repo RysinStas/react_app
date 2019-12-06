@@ -24,42 +24,34 @@ class FeedPage extends React.Component {
     };
 
     render () {
-        const {username, posts} = this.props;
-        if (username) {
-            return (
-                <>
-                    <AppHeader />
-                    <h2>Hello {username}!</h2>
-                    <PostAddForm />
-                    <PostsList />
-                    <PaginationStyle>
-                        <Pagination defaultCurrent={1}
-                                    defaultPageSize={5}
-                                    current={posts.current_page}
-                                    pageSize={posts.per_page}
-                                    total={posts.total}
-                                    onChange={(page)=>this.handleChange(page)}
-                                    hideOnSinglePage={true}
-                        />
-                    </PaginationStyle>
-                </>
-            );
-        }
+        const {account, posts} = this.props;
         return (
             <>
                 <AppHeader />
-                <h2>Hello! To write a tweet please register or login</h2>
+                <h2>Hello {account.name}!</h2>
+                <PostAddForm />
                 <PostsList />
+                <PaginationStyle>
+                    <Pagination defaultCurrent={1}
+                                defaultPageSize={5}
+                                current={posts.current_page}
+                                pageSize={posts.per_page}
+                                total={posts.total}
+                                onChange={(page)=>this.handleChange(page)}
+                                hideOnSinglePage={true}
+                    />
+                </PaginationStyle>
             </>
         );
+
     }
 
 }
 
 const mapStateToProps = (state) =>{
     return {
-        username: state.auth.data.username,
-        posts: state.feed.data
+        account: state.auth.account,
+        posts: state.feed
     }
 };
 export default connect(mapStateToProps, actions)(FeedPage);

@@ -26,7 +26,7 @@ const PostAddForm = (props) => {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                props.addPost(values.content, props.username);
+                props.addPost(values.content, props.account.name);
                 props.form.resetFields();
             }
         });
@@ -60,8 +60,8 @@ const PostAddForm = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        current_page: state.feed.data.current_page,
-        username: state.auth.data.username
+        current_page: state.feed.current_page,
+        account: state.auth.account
     }
 };
 

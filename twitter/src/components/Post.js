@@ -49,7 +49,7 @@ class Post extends React.Component {
     };
 
     render() {
-        const {post, username} = this.props;
+        const {post, account} = this.props;
         return (
             <>
                 <Row type="flex" align="bottom">
@@ -63,7 +63,7 @@ class Post extends React.Component {
                         </Row>
                     </Col>
                     <Col span={1}>
-                        {username===post.user.name &&
+                        {account.name===post.user.name &&
                             <>
                                 <ButtonWrapper>
                                     <Button type="primary" size="small" icon="edit"
@@ -95,7 +95,7 @@ class Post extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-        username : state.auth.data.username
+        account : state.auth.account
     }
 };
 

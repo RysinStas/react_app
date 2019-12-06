@@ -15,9 +15,9 @@ class LoginForm extends React.Component {
     };
 
     render() {
-        const { username } = this.props;
+        const { account } = this.props;
         const { getFieldDecorator } = this.props.form;
-        if (username) {
+        if (account.name) {
             return  <Redirect to="/feed" />
         }
         return (
@@ -55,7 +55,7 @@ class LoginForm extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-        username: state.auth.data.username
+        account: state.auth.account
     }
 };
 export default connect(mapStateToProps,actions)(Form.create({ name: 'login' })(LoginForm));
