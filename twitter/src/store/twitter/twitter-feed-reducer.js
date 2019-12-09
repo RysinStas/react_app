@@ -1,5 +1,6 @@
 import {ADD_POST, DELETE_POST, FETCH_POSTS, UPDATE_POST} from "./twitter-actions";
-import {success, error} from "redux-saga-requests";
+import {success} from "redux-saga-requests";
+import {REMOVE_AUTH_ERRORS, SHOW_AUTH_ERROR} from "../auth/auth-actions";
 
 const initialState = {
     posts: [],
@@ -30,11 +31,6 @@ const twitterFeedReducer = (state = initialState, action) => {
                 pending: false
             };
         case success(ADD_POST):
-            return {
-                ...state,
-                error: [],
-                pending: false
-            };
         case success(DELETE_POST):
             return {
                 ...state,
@@ -51,14 +47,17 @@ const twitterFeedReducer = (state = initialState, action) => {
                     return post;
                 })
             };
-        case error(FETCH_POSTS):
-        case error(ADD_POST):
-        case error(DELETE_POST):
-        case error(UPDATE_POST):
+        case SHOW_AUTH_ERROR:
             return {
                 ...state,
-                error: [...state.error , action.payload.error],
-                pending: false
+                pending: false,
+                error: [...state.error, action.payload]
+            };
+        case REMOVE_AUTH_ERRORS:
+            return {
+                ...state,
+                pending: false,
+                error: []
             };
         default:
             return state;

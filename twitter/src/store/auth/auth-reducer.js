@@ -1,8 +1,8 @@
 import {
-    APP_INIT, FETCH_USER,
+    APP_INIT, FETCH_USER, REMOVE_AUTH_ERRORS, SHOW_AUTH_ERROR,
     USER_LOGIN, USER_LOGOUT, USER_REGISTER
 } from "./auth-actions";
-import {success, error} from "redux-saga-requests";
+import {success} from "redux-saga-requests";
 
 const initialState = {
     account: {},
@@ -40,13 +40,17 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 ...initialState
             };
-        case error(USER_LOGIN):
-        case error(USER_REGISTER):
-        case error(USER_LOGOUT):
+        case SHOW_AUTH_ERROR:
             return {
                 ...state,
                 pending: false,
-                error: [...state.error, action.payload.message]
+                error: [...state.error, action.payload]
+            };
+        case REMOVE_AUTH_ERRORS:
+            return {
+                ...state,
+                pending: false,
+                error: []
             };
         case APP_INIT:
             return {

@@ -44,8 +44,8 @@ class Post extends React.Component {
     };
 
     postDeleteHandler = () => {
-        const {post, deletePost} = this.props;
-        deletePost(post);
+        const {post, deletePostAndFetchPosts} = this.props;
+        deletePostAndFetchPosts(post);
     };
 
     render() {

@@ -7,9 +7,8 @@ import createSagaMiddleware from "redux-saga"
 import rootSaga from "./sagas";
 import { DELETE_AUTH_HEADER, SET_AUTH_HEADER } from "./auth/auth-actions";
 import {requestsPromiseMiddleware} from "redux-saga-requests";
-
 import authMiddleWare from "./auth/auth-middleware";
-import twitterMiddleWare from "./twitter/twitter-middleware";
+
 
 const setAxiosDefaults = (store) => (next) => (action) => {
     switch (action.type) {
@@ -41,7 +40,6 @@ const store = createStore(
     composeEnhancers(applyMiddleware(
         thunkMiddleware,
         authMiddleWare,
-        twitterMiddleWare,
         setAxiosDefaults,
         requestsPromiseMiddleware(),
         sagaMiddleware,

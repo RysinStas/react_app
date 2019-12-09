@@ -22,7 +22,11 @@ export const addPost = (content, username) => {
                 data: {content}
             },
         },
-        meta: {content, username}
+        meta: {
+            asPromise: true,
+            content,
+            username
+        }
     })
 };
 
@@ -36,7 +40,10 @@ export const deletePost = (post) => {
                 method: 'delete'
             },
         },
-        meta: {post}
+        meta: {
+            post,
+            asPromise: true,
+        },
     })
 };
 
@@ -52,5 +59,39 @@ export const updatePost = (post, newContent) => {
             },
         },
         meta: {post, newContent}
+    })
+};
+
+export const addPostAndFetchPosts = (content, username) => async (dispatch) => {
+    try {
+        await dispatch(addPost(content, username));
+        await dispatch(fetchPosts());
+    } catch (error) {
+        console.log('addPostAndFetchPosts');
+        dispatch(showPostError(error));
+    }
+};
+
+export const deletePostAndFetchPosts = (post) => async (dispatch) => {
+    try {
+        await dispatch(deletePost(post));
+        await dispatch(fetchPosts());
+    } catch (error) {
+        console.log('deletePostAndFetchPosts');
+        dispatch(showPostError(error));
+    }
+};
+export const SHOW_POST_ERROR = 'SHOW_POST_ERROR';
+export const showPostError = (error) => {
+    return ({
+        type: SHOW_POST_ERROR,
+        payload: error
+    })
+};
+
+export const REMOVE_POST_ERRORS = 'REMOVE_POST_ERRORS';
+export const removePostErrors = () => {
+    return ({
+        type: REMOVE_POST_ERRORS
     })
 };

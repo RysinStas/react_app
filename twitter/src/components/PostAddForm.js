@@ -26,7 +26,7 @@ const PostAddForm = (props) => {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                props.addPost(values.content, props.account.name);
+                props.addPostAndFetchPosts(values.content, props.account.name);
                 props.form.resetFields();
             }
         });
