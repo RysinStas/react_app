@@ -13,24 +13,43 @@ const PaginationStyle = styled.ul`
   text-align: center;
 `;
 
-class FeedPage extends React.Component {
+class HashtagPage extends React.Component {
+    state = {
+        hashtag: ''
+    };
 
     componentDidMount() {
-        console.log('FeedPage');
-        this.props.fetchPosts();
+        console.log('did mount hash tag');
+        this.setState({
+            hashtag: this.props.match.params.name
+        });
+        this.props.fetchPosts(1,this.props.match.params.name );
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps===this.props) {
+            this.props.fetchPosts(1,this.props.match.params.name );
+        }
+        console.log('did UPDATE hash tag');
+        // this.setState({
+        //     hashtag: this.props.match.params.name
+        // });
+        // this.props.fetchPosts(1,this.props.match.params.name );
     }
 
     handleChange = (page) => {
-        this.props.fetchPosts(page);
+        this.props.fetchPosts(page, this.state.hashtag);
     };
 
     render () {
+        console.log(this.props.match.params.name);
+
         const {account, posts} = this.props;
         return (
             <>
                 <AppHeader />
-                <h2>Hello {account.name}!</h2>
-                <PostAddForm />
+                <h2> #{this.state.hashtag}</h2>
+                {/*<PostAddForm />*/}
                 <PostsList />
                 <PaginationStyle>
                     <Pagination defaultCurrent={1}
@@ -55,4 +74,4 @@ const mapStateToProps = (state) =>{
         posts: state.feed
     }
 };
-export default connect(mapStateToProps, actions)(FeedPage);
+export default connect(mapStateToProps, actions)(HashtagPage);

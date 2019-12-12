@@ -6,6 +6,7 @@ import FeedPage from "./pages/FeedPage"
 import SignUpPage from "./pages/SignUpPage"
 import WelcomePage from "./pages/WelcomePage";
 import PrivateRoute from "./PrivateRoute";
+import HashtagPage from "./pages/HashtagPage";
 
 const Navigation = () => {
     return (
@@ -15,7 +16,8 @@ const Navigation = () => {
                 <Route path="/login" component={LoginPage}/>
                 <Route path="/registration" component={SignUpPage}/>
                 <PrivateRoute path="/logout" component={LogoutPage}/>
-                <PrivateRoute path="/feed" component={FeedPage}/>
+                <PrivateRoute path="/feed" component={FeedPage} />
+                <PrivateRoute path="/hashtag/:name" component={HashtagPage} />
             </Switch>
         </Router>
     );

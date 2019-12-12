@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Models\Hashtag;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,10 +14,21 @@ class PostsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param PostRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(PostRequest $request)
     {
+
+        if ($request->input('hashtag')) {
+            $posts = Hashtag::where('name', $request->input('hashtag'))
+                ->firstOrFail()
+                ->posts()
+                ->with('user:id,name')
+                ->latest()
+                ->paginate(5);
+            return $posts;
+        }
         return Post::with('user:id,name')
             ->latest()
             ->paginate(5);
@@ -41,7 +53,25 @@ class PostsController extends Controller
     public function store(PostRequest $request)
     {
         $user = $request->user();
-        return  Post::create( ['content' => $request['content'] , 'user_id' => $user->id]);
+        $post = new Post($request->post());
+
+        $content = $request->input('content');
+        preg_match_all('/#(\w+)/', $content, $matches);
+        $saved_post= $user->posts()->save($post);
+
+        // $matches[0] - c символом #
+        // $matches[1] - без символа #
+        foreach ($matches[1] as $hashtag) {
+            $hashtag1 = Hashtag::firstOrCreate(['name'=>$hashtag]);
+            $post->hashtags()->attach($hashtag1);
+        }
+
+        return $saved_post;
+
+               // Поиск mentions
+//        preg_match_all("/@(\w+)/", $msg, $matches);
+//        foreach ($matches[1] as $username)
+//            logger($username . ' ') ;
     }
 
     /**

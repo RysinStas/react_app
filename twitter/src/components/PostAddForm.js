@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import {Form, Input, Button, Mentions} from 'antd';
 import 'antd/dist/antd.css';
 
 import * as actions from '../store/twitter/twitter-actions';
@@ -7,56 +7,131 @@ import {connect} from "react-redux";
 
 import Schema from 'async-validator';
 
+
+import debounce from 'lodash/debounce';
+
 Schema.warning = function(){};
 
 const { TextArea } = Input;
+const { Option } = Mentions;
 
-const PostAddForm = (props) => {
-    const onPressEnter = (e) => {
+
+class PostAddForm extends React.Component {
+
+    onPressEnter = (e) => {
         if (e.ctrlKey || e.metaKey) {
-            const value = props.form.getFieldValue('content');
-            props.form.setFieldsValue({
+            const value = this.props.form.getFieldValue('content');
+            this.props.form.setFieldsValue({
                 content: value + '\n',
             });
         } else {
-            onFormSubmit(e);
+            this.onFormSubmit(e);
         }
     };
-    const onFormSubmit = (e) => {
+    onFormSubmit = (e) => {
         e.preventDefault();
-        props.form.validateFieldsAndScroll((err, values) => {
+        this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                props.addPostAndFetchPosts(values.content, props.account.name);
-                props.form.resetFields();
+                this.props.addPostAndFetchPosts(values.content, this.props.account.name);
+                this.props.form.resetFields();
             }
         });
     };
 
-    const { getFieldDecorator } = props.form;
+    state = {
+        search: '',
+        loading: false,
+        tags: [],
+        users:[],
+        prefix: '#'
+    };
 
-    return (
-        <Form
-            onSubmit={onFormSubmit}>
-            <Form.Item>
-                {getFieldDecorator('content', {
-                    rules: [{ required: true, message: 'Please input post content', whitespace: true, min: 1 }],
-                    initialValue: ''
-                })(
-                    <TextArea
-                        autoSize = { {minRows: 5, maxRows: 10} }
-                        placeholder="Put your text here"
-                        autoFocus
-                        onPressEnter = {onPressEnter}
-                    >
-                    </TextArea>
-                )}
-            </Form.Item>
-            <Form.Item style={{ textAlign: 'center' }}>
-                <Button type="primary" htmlType="submit">Add Post</Button>
-            </Form.Item>
-        </Form>
-    );
-};
+    onSearch = (search, prefix) => {
+        this.setState({ search, loading: !!search, tags: [] });
+        // console.log('prefix', prefix, 'Search:', search);
+        this.fetchData(search, prefix);
+    };
+
+    fetchData = debounce( (key, prefix) => {
+        if (!key) {
+            this.setState({
+                tags: [],
+            });
+            return;
+        }
+        switch (prefix) {
+            case '#':
+                this.props.fetchHashtags(key)
+                    .then((response) => {
+                        const { search } = this.state;
+                        if (search !== key) return;
+
+                        this.setState({
+                            tags: response.payload.data,
+                            loading: false,
+                            prefix
+                        });
+                    });
+                break;
+            case '@':
+                this.setState({
+                    users: [{name: 'admin'}, {name: 'psv'}],
+                    loading: false,
+                    prefix
+                });
+                break;
+        }
+
+    } , 800);
+
+    render() {
+        const { getFieldDecorator } = this.props.form;
+        const { tags, users, loading, prefix} = this.state;
+        return (
+            <Form
+                onSubmit={this.onFormSubmit}>
+                <Form.Item>
+                    {getFieldDecorator('content', {
+                        rules: [{required: true, message: 'Please input post content', whitespace: true, min: 1}],
+                        initialValue: ''
+                    })(
+                        // <TextArea
+                        //     autoSize={{minRows: 5, maxRows: 10}}
+                        //     placeholder="Put your text here"
+                        //     autoFocus
+                        //     onPressEnter={this.onPressEnter}
+                        //     // onChange={this.onChangeText}
+                        // >
+                        // </TextArea>
+                        <Mentions
+                            rows="5"
+                            placeholder="You can use @ to ref user here"
+                            prefix={['@', '#']}
+                            autoFocus
+                            loading={loading}
+                            onSearch={this.onSearch}
+                        >
+                            {prefix==='#' ? tags.map(({ name }) => (
+                                <Option key={name} value={name} className="antd-demo-dynamic-option">
+                                    <span>{name}</span>
+                                </Option>
+                            )) :
+                                users.map(({ name }) => (
+                                    <Option key={name} value={name} className="antd-demo-dynamic-option">
+                                        <span>{name}</span>
+                                    </Option>
+                                ))
+                            }
+                        </Mentions>,
+                    )}
+                </Form.Item>
+                <Form.Item style={{textAlign: 'center' }}>
+                    <Button type="primary" htmlType="submit">Add Post</Button>
+                </Form.Item>
+            </Form>
+        );
+    }
+}
 
 const mapStateToProps = (state) => {
     return {

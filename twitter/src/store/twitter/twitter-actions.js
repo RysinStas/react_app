@@ -1,10 +1,11 @@
 export const FETCH_POSTS = 'FETCH_POSTS';
-export const fetchPosts = (page = 1) => {
+export const fetchPosts = (page = 1, hashtag) => {
+
     return ({
         type: FETCH_POSTS,
         payload: {
             request: {
-                url: `posts?page=${page}`,
+                url: hashtag ? `posts?page=${page}&hashtag=${hashtag}` : `posts?page=${page}`,
             },
         },
         meta: {page}
@@ -93,5 +94,18 @@ export const REMOVE_POST_ERRORS = 'REMOVE_POST_ERRORS';
 export const removePostErrors = () => {
     return ({
         type: REMOVE_POST_ERRORS
+    })
+};
+
+export const FETCH_HASHTAGS = 'FETCH_HASHTAGS';
+export const fetchHashtags = (name = '') => {
+    return ({
+        type: FETCH_HASHTAGS,
+        payload: {
+            request: {
+                url: `hashtag/${name}`,
+            },
+        },
+        meta: {asPromise: true}
     })
 };

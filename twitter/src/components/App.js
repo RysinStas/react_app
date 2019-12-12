@@ -15,6 +15,7 @@ const Container = styled.div`
 
 class App extends React.Component {
     componentDidMount() {
+        console.log('APP');
         this.props.appInit();
     }
 

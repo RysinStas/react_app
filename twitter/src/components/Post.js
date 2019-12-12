@@ -7,6 +7,9 @@ import 'antd/dist/antd.css';
 import * as actions from '../store/twitter/twitter-actions';
 import {connect} from "react-redux";
 import PostEditForm from "./PostEditForm";
+import {Link} from "react-router-dom";
+
+// import replace from 'lodash/replace';
 
 const PostContent = styled.div`
     margin-bottom: 1rem;
@@ -50,12 +53,19 @@ class Post extends React.Component {
 
     render() {
         const {post, account} = this.props;
+
+        const regHash = /(#\w*)/gi;
+        const parts = post.content.split(regHash);
+
         return (
             <>
+
                 <Row type="flex" align="bottom">
                     <Col span={23} style={{paddingRight: '10px'}}>
                         <Row>
-                            <PostContent>{post.content}</PostContent>
+                            {/*<PostContent>{post.content}</PostContent>*/}
+                            <PostContent>{parts.map(part => (part.match(regHash) ? <Link key={part} to={`/hashtag/${part.replace('#','')}`} >{part}</Link> : part))}</PostContent>
+                            {/*<PostContent>{parts.map(part => (part.match(regHash) ? <Link key={part} to={{ pathname: `hashtag/${part.replace('#','')}` }} >{part}</Link> : part))}</PostContent>*/}
                             <PostInfo>
                                 <Col span={8}>created by {post.user.name}</Col>
                                 <Col span={8} offset={8} style={{textAlign:'right'}}>{ moment(post.updated_at).format('LLL')}</Col>
