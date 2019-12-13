@@ -22,7 +22,7 @@ const PaginationStyle = styled.ul`
   text-align: center;
 `;
 
-class HashtagPage extends React.Component {
+class MentionsPage extends React.Component {
 
     state = {
         hashtag: ''
@@ -32,7 +32,7 @@ class HashtagPage extends React.Component {
         this.setState({
             hashtag: this.props.match.params.name
         });
-        this.props.fetchPosts(1,this.props.match.params.name );
+        this.props.fetchPostsMentions(1,this.props.match.params.name );
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -40,12 +40,12 @@ class HashtagPage extends React.Component {
             this.setState({
                 hashtag: this.props.match.params.name
             });
-            this.props.fetchPosts(1,this.props.match.params.name );
+            this.props.fetchPostsMentions(1,this.props.match.params.name );
         }
     }
 
     handleChange = (page) => {
-        this.props.fetchPosts(page, this.state.hashtag);
+        this.props.fetchPostsMentions(page, this.state.hashtag);
     };
 
     render () {
@@ -54,7 +54,7 @@ class HashtagPage extends React.Component {
         return (
             <>
                 <AppHeader />
-                <h2> #{this.state.hashtag}</h2>
+                <h2> @{this.state.hashtag}</h2>
                 {/*<PostAddForm />*/}
                 <PostsList />
                 <PaginationStyle>
@@ -79,4 +79,4 @@ const mapStateToProps = (state) =>{
         posts: state.feed
     }
 };
-export default connect(mapStateToProps, actions)(HashtagPage);
+export default connect(mapStateToProps, actions)(MentionsPage);

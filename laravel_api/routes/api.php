@@ -34,3 +34,6 @@ Route::post('/logout', 'AuthController@logout');
 
 Route::get('/hashtag/{name}', 'HashtagController@find');
 Route::get('/hashtag/', 'HashtagController@index');
+
+Route::get('/mentions/{name}', 'MentionsController@find');
+Route::get('/mentions/', 'MentionsController@index');

@@ -3,10 +3,12 @@ import LoginForm from "../LoginForm";
 import React from "react";
 import {connect} from "react-redux";
 import AppHeader from "../AppHeader";
+import {Redirect} from "react-router-dom";
 
-const LoginPage = ({pending}) => {
+const LoginPage = ({pending, account}) => {
     return (
         <>
+            { account.name && <Redirect to="/feed" />}
             <AppHeader />
             <Row>
                 <Col span={8} offset={8}>
@@ -19,7 +21,8 @@ const LoginPage = ({pending}) => {
 
 const mapStateToProps = (state) => {
     return {
-        pending:  state.auth.pending
+        pending:  state.auth.pending,
+        account: state.auth.account
     }
 };
 export default connect(mapStateToProps)(LoginPage);

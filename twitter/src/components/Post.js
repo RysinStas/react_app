@@ -51,20 +51,34 @@ class Post extends React.Component {
         deletePostAndFetchPosts(post);
     };
 
+    filterContent = (post) => {
+        const regAll = /([#@]\w\S*)/g;
+        const regHashteg = /([#]\w\S*)/g;
+        const regMention= /([@]\w\S*)/g;
+        const parts = post.content.split(regAll);
+
+        return parts.map(part => {
+            if (part.match(regHashteg)){
+                return <Link key={part} to={`/hashtag/${part.replace('#','')}`} >{part}</Link>
+            } else if (part.match(regMention)) {
+                return <Link key={part} to={`/mentions/${part.replace('@','')}`} >{part}</Link>
+            } else {
+                return part
+            }
+            // (part.match(regHashteg) ? <Link key={part} to={`/hashtag/${part.replace('#','')}`} >{part}</Link> : part)
+        })
+    };
+
     render() {
         const {post, account} = this.props;
-
-        const regHash = /(#\w*)/gi;
-        const parts = post.content.split(regHash);
-
         return (
             <>
 
                 <Row type="flex" align="bottom">
                     <Col span={23} style={{paddingRight: '10px'}}>
                         <Row>
-                            {/*<PostContent>{post.content}</PostContent>*/}
-                            <PostContent>{parts.map(part => (part.match(regHash) ? <Link key={part} to={`/hashtag/${part.replace('#','')}`} >{part}</Link> : part))}</PostContent>
+                            <PostContent>{this.filterContent(post)}</PostContent>
+                            {/*<PostContent>{parts.map(part => (part.match(regHash) ? <Link key={part} to={`/hashtag/${part.replace('#','')}`} >{part}</Link> : part))}</PostContent>*/}
                             {/*<PostContent>{parts.map(part => (part.match(regHash) ? <Link key={part} to={{ pathname: `hashtag/${part.replace('#','')}` }} >{part}</Link> : part))}</PostContent>*/}
                             <PostInfo>
                                 <Col span={8}>created by {post.user.name}</Col>

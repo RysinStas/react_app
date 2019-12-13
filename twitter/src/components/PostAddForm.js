@@ -1,32 +1,29 @@
 import React from 'react';
-import {Form, Input, Button, Mentions} from 'antd';
+import {Form, Button, Mentions} from 'antd';
 import 'antd/dist/antd.css';
-
 import * as actions from '../store/twitter/twitter-actions';
 import {connect} from "react-redux";
-
-import Schema from 'async-validator';
-
-
+// import Schema from 'async-validator';
 import debounce from 'lodash/debounce';
 
-Schema.warning = function(){};
+// Schema.warning = function(){};
 
-const { TextArea } = Input;
 const { Option } = Mentions;
-
 
 class PostAddForm extends React.Component {
 
     onPressEnter = (e) => {
-        if (e.ctrlKey || e.metaKey) {
-            const value = this.props.form.getFieldValue('content');
-            this.props.form.setFieldsValue({
-                content: value + '\n',
-            });
-        } else {
-            this.onFormSubmit(e);
+        if (e.key ==='Enter') {
+            if (e.ctrlKey || e.metaKey) {
+                    const value = this.props.form.getFieldValue('content');
+                    this.props.form.setFieldsValue({
+                        content: value + '\n',
+                    });
+                } else {
+                    this.onFormSubmit(e);
+                }
         }
+
     };
     onFormSubmit = (e) => {
         e.preventDefault();
@@ -74,11 +71,25 @@ class PostAddForm extends React.Component {
                     });
                 break;
             case '@':
-                this.setState({
-                    users: [{name: 'admin'}, {name: 'psv'}],
-                    loading: false,
-                    prefix
-                });
+                this.props.fetchMentions(key)
+                    .then((response) => {
+                        const { search } = this.state;
+                        if (search !== key) return;
+
+                        this.setState({
+                            users: response.payload.data,
+                            loading: false,
+                            prefix
+                        });
+                    });
+
+                // this.setState({
+                //     users: [{name: 'admin'}, {name: 'psv'}],
+                //     loading: false,
+                //     prefix
+                // });
+                break;
+            default:
                 break;
         }
 
@@ -95,28 +106,21 @@ class PostAddForm extends React.Component {
                         rules: [{required: true, message: 'Please input post content', whitespace: true, min: 1}],
                         initialValue: ''
                     })(
-                        // <TextArea
-                        //     autoSize={{minRows: 5, maxRows: 10}}
-                        //     placeholder="Put your text here"
-                        //     autoFocus
-                        //     onPressEnter={this.onPressEnter}
-                        //     // onChange={this.onChangeText}
-                        // >
-                        // </TextArea>
                         <Mentions
                             rows="5"
-                            placeholder="You can use @ to ref user here"
+                            placeholder="Put your text here"
                             prefix={['@', '#']}
                             autoFocus
                             loading={loading}
                             onSearch={this.onSearch}
+                            onKeyPress={this.onPressEnter}
                         >
                             {prefix==='#' ? tags.map(({ name }) => (
                                 <Option key={name} value={name} className="antd-demo-dynamic-option">
                                     <span>{name}</span>
                                 </Option>
                             )) :
-                                users.map(({ name }) => (
+                                users.map(( name  ) => (
                                     <Option key={name} value={name} className="antd-demo-dynamic-option">
                                         <span>{name}</span>
                                     </Option>

@@ -18,4 +18,8 @@ class Post extends Model
         return $this->belongsToMany(Hashtag::class);
     }
 
+    public function mentions() {
+        return $this->belongsToMany(User::class, 'mentions', 'post_id', 'user_id');
+    }
+
 }

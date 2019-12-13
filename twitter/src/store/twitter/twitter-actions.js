@@ -12,6 +12,20 @@ export const fetchPosts = (page = 1, hashtag) => {
     })
 };
 
+export const FETCH_POSTS_MENTIONS = 'FETCH_POSTS_MENTIONS';
+export const fetchPostsMentions = (page = 1, mentions) => {
+
+    return ({
+        type: FETCH_POSTS_MENTIONS,
+        payload: {
+            request: {
+                url: mentions ? `posts?page=${page}&mentions=${mentions}` : `posts?page=${page}`,
+            },
+        },
+        meta: {page}
+    })
+};
+
 export const ADD_POST = 'ADD_POST';
 export const addPost = (content, username) => {
     return ({
@@ -104,6 +118,19 @@ export const fetchHashtags = (name = '') => {
         payload: {
             request: {
                 url: `hashtag/${name}`,
+            },
+        },
+        meta: {asPromise: true}
+    })
+};
+
+export const FETCH_MENTIONS = 'FETCH_MENTIONS';
+export const fetchMentions = (name = '') => {
+    return ({
+        type: FETCH_MENTIONS,
+        payload: {
+            request: {
+                url: `mentions/${name}`,
             },
         },
         meta: {asPromise: true}

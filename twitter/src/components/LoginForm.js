@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Icon, Input, Button} from 'antd';
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import * as actions from '../store/auth/auth-actions';
 
@@ -15,11 +15,8 @@ class LoginForm extends React.Component {
     };
 
     render() {
-        const { account } = this.props;
         const { getFieldDecorator } = this.props.form;
-        if (account.name) {
-            return  <Redirect to="/feed" />
-        }
+
         return (
             <Form onSubmit={this.handleSubmit} className="login-form" style={ {'maxWidth': '300px'}}>
                 <Form.Item>
@@ -53,10 +50,6 @@ class LoginForm extends React.Component {
         );
     }
 }
-const mapStateToProps = (state) => {
-    return {
-        account: state.auth.account
-    }
-};
-export default connect(mapStateToProps,actions)(Form.create({ name: 'login' })(LoginForm));
+
+export default connect(null,actions)(Form.create({ name: 'login' })(LoginForm));
 

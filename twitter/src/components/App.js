@@ -15,15 +15,17 @@ const Container = styled.div`
 
 class App extends React.Component {
     componentDidMount() {
-        console.log('APP');
+        console.log('APP DidMount');
         this.props.appInit();
     }
 
     render() {
+        console.log('App  render');
         return (
             <Container>
-                <Navigation/>
+                    <Navigation/>
             </Container>
+
         );
     }
 }

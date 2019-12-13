@@ -19,7 +19,6 @@ class PostsController extends Controller
      */
     public function index(PostRequest $request)
     {
-
         if ($request->input('hashtag')) {
             $posts = Hashtag::where('name', $request->input('hashtag'))
                 ->firstOrFail()
@@ -29,6 +28,18 @@ class PostsController extends Controller
                 ->paginate(5);
             return $posts;
         }
+
+        if ($request->input('mentions')) {
+            $posts = User::where('name', $request->input('mentions'))
+                ->firstOrFail()
+                ->mentions()
+                ->with('user:id,name')
+                ->latest()
+                ->paginate(5);
+            return $posts;
+        }
+
+
         return Post::with('user:id,name')
             ->latest()
             ->paginate(5);
@@ -58,20 +69,21 @@ class PostsController extends Controller
         $content = $request->input('content');
         preg_match_all('/#(\w+)/', $content, $matches);
         $saved_post= $user->posts()->save($post);
-
-        // $matches[0] - c символом #
-        // $matches[1] - без символа #
+        // $matches[0] - c символом # ,$matches[1] - без символа #
         foreach ($matches[1] as $hashtag) {
             $hashtag1 = Hashtag::firstOrCreate(['name'=>$hashtag]);
             $post->hashtags()->attach($hashtag1);
         }
+        // Поиск mentions
+        preg_match_all("/@(\w\S+)/", $content, $matches2);
+        foreach ($matches2[1] as $user) {
+            $user1 = User::where('name', '=', $user)->first();
+            if ($user1) {
+                $post->mentions()->attach($user1);
+            }
+        }
 
         return $saved_post;
-
-               // Поиск mentions
-//        preg_match_all("/@(\w+)/", $msg, $matches);
-//        foreach ($matches[1] as $username)
-//            logger($username . ' ') ;
     }
 
     /**

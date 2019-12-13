@@ -1,4 +1,4 @@
-import {ADD_POST, DELETE_POST, FETCH_POSTS, UPDATE_POST} from "./twitter-actions";
+import {ADD_POST, DELETE_POST, FETCH_POSTS, FETCH_POSTS_MENTIONS, UPDATE_POST} from "./twitter-actions";
 import {success} from "redux-saga-requests";
 import {REMOVE_AUTH_ERRORS, SHOW_AUTH_ERROR} from "../auth/auth-actions";
 
@@ -22,6 +22,7 @@ const twitterFeedReducer = (state = initialState, action) => {
                 pending: true
             };
         case success(FETCH_POSTS):
+        case success(FETCH_POSTS_MENTIONS):
             const { data: posts, current_page, per_page, total} = action.payload.data;
             return {
                 ...state,
