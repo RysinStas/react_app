@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Icon, Input, Button} from 'antd';
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import * as actions from '../store/auth/auth-actions';
+import * as actions from '../../store/auth/auth-actions';
 
 class RegistrationForm extends React.Component {
     handleSubmit = e => {

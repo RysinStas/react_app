@@ -1,20 +1,10 @@
-// import PostAddForm from "../PostAddForm";
-import PostsList from "../PostsList";
 import React from "react";
 import {connect} from "react-redux";
 import {Pagination} from "antd";
 import * as actions from "../../store/twitter/twitter-actions"
 import styled from "styled-components";
 import AppHeader from "../AppHeader";
-// import {
-//     BrowserRouter as Router,
-//     Switch,
-//     Route,
-//     Link,
-//     Redirect,
-//     useParams,
-//     useRouteMatch
-// } from "react-router-dom";
+import PostsList from "../post/PostsList";
 
 const PaginationStyle = styled.ul`
   margin: 20px 0;
@@ -55,7 +45,6 @@ class HashtagPage extends React.Component {
             <>
                 <AppHeader />
                 <h2> #{this.state.hashtag}</h2>
-                {/*<PostAddForm />*/}
                 <PostsList />
                 <PaginationStyle>
                     <Pagination defaultCurrent={1}

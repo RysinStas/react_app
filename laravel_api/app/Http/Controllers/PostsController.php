@@ -63,27 +63,13 @@ class PostsController extends Controller
      */
     public function store(PostRequest $request)
     {
-        $user = $request->user();
-        $post = new Post($request->post());
-
+        $post = $request->user()->posts()->create($request->post());
         $content = $request->input('content');
-        preg_match_all('/#(\w+)/', $content, $matches);
-        $saved_post= $user->posts()->save($post);
-        // $matches[0] - c символом # ,$matches[1] - без символа #
-        foreach ($matches[1] as $hashtag) {
-            $hashtag1 = Hashtag::firstOrCreate(['name'=>$hashtag]);
-            $post->hashtags()->attach($hashtag1);
-        }
-        // Поиск mentions
-        preg_match_all("/@(\w\S+)/", $content, $matches2);
-        foreach ($matches2[1] as $user) {
-            $user1 = User::where('name', '=', $user)->first();
-            if ($user1) {
-                $post->mentions()->attach($user1);
-            }
-        }
 
-        return $saved_post;
+        $post->hashtags()->attach($this->findHashtag($content));
+        $post->mentions()->attach($this->findMention($content));
+
+        return $post;
     }
 
     /**
@@ -134,5 +120,28 @@ class PostsController extends Controller
         $post = Post::findOrFail($id);
         $post->delete();
         return response()->json(['message' => 'Post deleted']);
+    }
+
+    public function findHashtag($content) {
+        $result = [];
+        preg_match_all('/#(\w+)/', $content, $matches);
+        logger($matches);
+        foreach ($matches[1] as $hashtagName) {
+            $hashtag = Hashtag::firstOrCreate(['name'=>$hashtagName]);
+            $result[]=$hashtag->id;
+        }
+        return $result;
+    }
+
+    public function findMention($content) {
+        $result = [];
+        preg_match_all("/@(\w\S+)/", $content, $matches);
+        foreach ($matches[1] as $userName) {
+            $user = User::where('name', '=', $userName)->first();
+            if ($user) {
+                $result[] = $user->id;;
+            }
+        }
+        return $result;
     }
 }

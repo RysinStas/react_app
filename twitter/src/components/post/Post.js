@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {Button, Col, Row} from 'antd';
 import 'antd/dist/antd.css';
 
-import * as actions from '../store/twitter/twitter-actions';
+import * as actions from '../../store/twitter/twitter-actions';
 import {connect} from "react-redux";
 import PostEditForm from "./PostEditForm";
 import {Link} from "react-router-dom";
@@ -65,7 +65,7 @@ class Post extends React.Component {
             } else {
                 return part
             }
-            // (part.match(regHashteg) ? <Link key={part} to={`/hashtag/${part.replace('#','')}`} >{part}</Link> : part)
+
         })
     };
 

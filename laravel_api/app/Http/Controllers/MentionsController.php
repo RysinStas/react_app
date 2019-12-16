@@ -19,4 +19,6 @@ class MentionsController extends Controller
             ->take(5)
             ->pluck('name');
     }
+
+
 }

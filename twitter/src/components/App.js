@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import {connect} from "react-redux";
-import Navigation from "./Navigation";
+import Navigation from "./navigation/Navigation";
 import * as actions from "../store/auth/auth-actions"
 
 const Container = styled.div`
@@ -15,12 +15,10 @@ const Container = styled.div`
 
 class App extends React.Component {
     componentDidMount() {
-        console.log('APP DidMount');
         this.props.appInit();
     }
 
     render() {
-        console.log('App  render');
         return (
             <Container>
                     <Navigation/>

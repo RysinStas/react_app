@@ -1,5 +1,5 @@
 import {Col, Row, Icon} from "antd";
-import LoginForm from "../LoginForm";
+import LoginForm from "../auth/LoginForm";
 import React from "react";
 import {connect} from "react-redux";
 import AppHeader from "../AppHeader";

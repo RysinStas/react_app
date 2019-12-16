@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Icon, Input, Button} from 'antd';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import * as actions from '../store/auth/auth-actions';
+import * as actions from '../../store/auth/auth-actions';
 
 class LoginForm extends React.Component {
     handleSubmit = e => {

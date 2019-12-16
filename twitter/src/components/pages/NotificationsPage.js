@@ -1,10 +1,11 @@
+// import PostAddForm from "../PostAddForm";
+import PostsList from "../post/PostsList";
 import React from "react";
 import {connect} from "react-redux";
 import {Pagination} from "antd";
 import * as actions from "../../store/twitter/twitter-actions"
 import styled from "styled-components";
 import AppHeader from "../AppHeader";
-import PostsList from "../post/PostsList";
 
 const PaginationStyle = styled.ul`
   margin: 20px 0;
@@ -12,30 +13,20 @@ const PaginationStyle = styled.ul`
   text-align: center;
 `;
 
-class MentionsPage extends React.Component {
+class NotificationsPage extends React.Component {
 
     state = {
         hashtag: ''
     };
 
     componentDidMount() {
-        this.setState({
-            hashtag: this.props.match.params.name
-        });
-        this.props.fetchPostsMentions(1,this.props.match.params.name );
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.match.params.name!==this.props.match.params.name) {
-            this.setState({
-                hashtag: this.props.match.params.name
-            });
-            this.props.fetchPostsMentions(1,this.props.match.params.name );
-        }
+        const {account} = this.props;
+        this.props.fetchPostsMentions(1, account.name );
     }
 
     handleChange = (page) => {
-        this.props.fetchPostsMentions(page, this.state.hashtag);
+        const {account} = this.props;
+        this.props.fetchPostsMentions(page, account.name);
     };
 
     render () {
@@ -44,8 +35,8 @@ class MentionsPage extends React.Component {
         return (
             <>
                 <AppHeader />
-                <h2> All tweets with @{this.state.hashtag} mention</h2>
-                <PostsList />
+                {posts.posts.length ? <><h3>Someone mentioned you on a tweet</h3><PostsList /></> : <><h2>There is no information yet</h2>
+                    <h3>If someone mentions you on a tweet, it will display here.</h3></> }
                 <PaginationStyle>
                     <Pagination defaultCurrent={1}
                                 defaultPageSize={5}
@@ -58,14 +49,13 @@ class MentionsPage extends React.Component {
                 </PaginationStyle>
             </>
         );
-
     }
-
 }
 
 const mapStateToProps = (state) =>{
     return {
-        posts: state.feed
+        posts: state.feed,
+        account: state.auth.account
     }
 };
-export default connect(mapStateToProps, actions)(MentionsPage);
+export default connect(mapStateToProps, actions)(NotificationsPage);

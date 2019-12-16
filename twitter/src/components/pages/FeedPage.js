@@ -1,5 +1,5 @@
-import PostAddForm from "../PostAddForm";
-import PostsList from "../PostsList";
+import PostAddForm from "../post/PostAddForm";
+import PostsList from "../post/PostsList";
 import React from "react";
 import {connect} from "react-redux";
 import {Pagination} from "antd";
@@ -16,7 +16,6 @@ const PaginationStyle = styled.ul`
 class FeedPage extends React.Component {
 
     componentDidMount() {
-        console.log('FeedPage');
         this.props.fetchPosts();
     }
 
