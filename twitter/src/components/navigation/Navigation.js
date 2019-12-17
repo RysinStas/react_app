@@ -10,14 +10,19 @@ import HashtagPage from "../pages/HashtagPage";
 import MentionsPage from "../pages/MentionsPage";
 import NotificationsPage from "../pages/NotificationsPage";
 import Page404 from "../pages/Page404";
+import Errors from "../Errors";
+import {connect} from "react-redux";
 
-const Navigation = () => {
+const Navigation = (props) => {
+    const {errors} = props.errors;
     return (
         <Router>
+            <Errors errors={errors}/>
             <Switch>
                 <Route exact path="/" component={WelcomePage} />
                 <Route path="/login" component={LoginPage}/>
                 <Route path="/registration" component={SignUpPage}/>
+                <Route path="/page404" component={Page404}/>
                 <PrivateRoute path="/logout" component={LogoutPage}/>
                 <PrivateRoute path="/feed" component={FeedPage} />
                 <PrivateRoute path="/notifications/mentions" component={NotificationsPage} />
@@ -29,4 +34,10 @@ const Navigation = () => {
     );
 };
 
-export default Navigation
+const mapStateToProps = (state) => {
+    return {
+        errors: state.errors
+    }
+};
+
+export default connect(mapStateToProps)(Navigation)

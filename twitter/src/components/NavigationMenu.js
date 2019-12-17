@@ -27,14 +27,10 @@ class NavigationMenu extends React.Component {
                 <Menu.Item key="/notifications/mentions">
                     <Link to="/notifications/mentions">
                         <Icon type="bell"/>
-                        Mentions
+                        Notifications
                     </Link>
                 </Menu.Item>
                 }
-                <Menu.Item key="/setting" disabled>
-                    <Icon type="setting"/>
-                    Settings
-                </Menu.Item>
                 {!account.name ?
                     <Menu.Item key="/login" style={{float: 'right'}}>
                         <Link to="/login">

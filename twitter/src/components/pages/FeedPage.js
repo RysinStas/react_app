@@ -20,7 +20,7 @@ class FeedPage extends React.Component {
     }
 
     handleChange = (page) => {
-        this.props.fetchPosts(page);
+        this.props.fetchPosts({page});
     };
 
     render () {

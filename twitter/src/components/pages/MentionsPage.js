@@ -1,10 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
 import {Pagination} from "antd";
-import * as actions from "../../store/twitter/twitter-actions"
 import styled from "styled-components";
 import AppHeader from "../AppHeader";
 import PostsList from "../post/PostsList";
+import {fetchPosts} from "../../store/twitter/twitter-actions";
+import {showErrors} from "../../store/errors/errors-actions";
 
 const PaginationStyle = styled.ul`
   margin: 20px 0;
@@ -15,36 +16,38 @@ const PaginationStyle = styled.ul`
 class MentionsPage extends React.Component {
 
     state = {
-        hashtag: ''
+        name: ''
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         this.setState({
-            hashtag: this.props.match.params.name
+            name: this.props.match.params.name
         });
-        this.props.fetchPostsMentions(1,this.props.match.params.name );
+        this.fetchMentions(1, this.props.match.params.name )
     }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    async componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.match.params.name!==this.props.match.params.name) {
             this.setState({
-                hashtag: this.props.match.params.name
+                name: this.props.match.params.name
             });
-            this.props.fetchPostsMentions(1,this.props.match.params.name );
+            this.fetchMentions(1,this.props.match.params.name );
         }
     }
 
-    handleChange = (page) => {
-        this.props.fetchPostsMentions(page, this.state.hashtag);
+    fetchMentions = async (page, mentions) => {
+        try {
+            await this.props.fetchPosts({page, mentions});
+        } catch (error) {
+            this.props.showErrors(error.payload.response);
+        }
     };
 
     render () {
-
         const {posts} = this.props;
         return (
             <>
                 <AppHeader />
-                <h2> All tweets with @{this.state.hashtag} mention</h2>
+                <h2> All tweets with @{this.state.name} mention</h2>
                 <PostsList />
                 <PaginationStyle>
                     <Pagination defaultCurrent={1}
@@ -52,15 +55,13 @@ class MentionsPage extends React.Component {
                                 current={posts.current_page}
                                 pageSize={posts.per_page}
                                 total={posts.total}
-                                onChange={(page)=>this.handleChange(page)}
+                                onChange={(page)=>this.fetchMentions(page,this.state.name)}
                                 hideOnSinglePage={true}
                     />
                 </PaginationStyle>
             </>
         );
-
     }
-
 }
 
 const mapStateToProps = (state) =>{
@@ -68,4 +69,4 @@ const mapStateToProps = (state) =>{
         posts: state.feed
     }
 };
-export default connect(mapStateToProps, actions)(MentionsPage);
+export default connect(mapStateToProps, {fetchPosts, showErrors})(MentionsPage);

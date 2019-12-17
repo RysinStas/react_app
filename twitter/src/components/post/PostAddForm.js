@@ -111,8 +111,6 @@ class PostAddForm extends React.Component {
                                 ))
                             }
                         </Mentions>
-
-                        // <MensionsHashtagInput onKeyPress={this.onPressEnter}/>
                     )}
                 </Form.Item>
                 <Form.Item style={{textAlign: 'center'}}>

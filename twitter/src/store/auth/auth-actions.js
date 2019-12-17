@@ -1,3 +1,5 @@
+import {showErrors} from "../errors/errors-actions";
+
 export const USER_LOGIN = 'USER_LOGIN';
 export const userLogin = (credentials) => {
     return ({
@@ -82,7 +84,7 @@ export const appInit = () => async (dispatch) => {
             await dispatch(fetchUser());
         }
     } catch (error) {
-        dispatch(showAuthError(error));
+        dispatch(showErrors(error.payload.response));
     }
 };
 
@@ -107,7 +109,7 @@ export const loginAndFetchUser = (credentials) => async (dispatch) => {
         dispatch(setAuthHeader(response.payload.data.access_token));
         await dispatch(fetchUser());
     } catch (error) {
-        dispatch(showAuthError(error));
+        dispatch(showErrors(error.payload.response));
     }
 };
 
@@ -117,22 +119,7 @@ export const registerAndFetchUser = (userData) => async (dispatch) => {
         dispatch(setAuthHeader(response.payload.data.access_token));
         await dispatch(fetchUser());
     } catch (error) {
-        dispatch(showAuthError(error));
+        dispatch(showErrors(error.payload.response));
     }
-};
-
-export const SHOW_AUTH_ERROR = 'SHOW_AUTH_ERROR';
-export const showAuthError = (error) => {
-    return ({
-        type: SHOW_AUTH_ERROR,
-        payload: error
-    })
-};
-
-export const REMOVE_AUTH_ERRORS = 'REMOVE_AUTH_ERRORS';
-export const removeAuthErrors = () => {
-    return ({
-        type: REMOVE_AUTH_ERRORS
-    })
 };
 

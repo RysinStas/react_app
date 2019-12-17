@@ -22,7 +22,7 @@ class HashtagPage extends React.Component {
         this.setState({
             hashtag: this.props.match.params.name
         });
-        this.props.fetchPosts(1,this.props.match.params.name );
+        this.props.fetchPosts({page: 1,hashtag: this.props.match.params.name} );
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -30,12 +30,12 @@ class HashtagPage extends React.Component {
             this.setState({
                 hashtag: this.props.match.params.name
             });
-            this.props.fetchPosts(1,this.props.match.params.name );
+            this.props.fetchPosts({page: 1, hashtag: this.props.match.params.name});
         }
     }
 
     handleChange = (page) => {
-        this.props.fetchPosts(page, this.state.hashtag);
+        this.props.fetchPosts({page, hashtag: this.state.hashtag});
     };
 
     render () {
@@ -44,7 +44,7 @@ class HashtagPage extends React.Component {
         return (
             <>
                 <AppHeader />
-                <h2> #{this.state.hashtag}</h2>
+                <h2> Posts with #{this.state.hashtag}</h2>
                 <PostsList />
                 <PaginationStyle>
                     <Pagination defaultCurrent={1}

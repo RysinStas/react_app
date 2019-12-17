@@ -2,6 +2,7 @@ import {createStore, combineReducers, applyMiddleware, compose} from "redux";
 import thunkMiddleware from "redux-thunk";
 import twitterFeedReducer from "./twitter/twitter-feed-reducer";
 import authReducer from "./auth/auth-reducer";
+import errorsReducer from "./errors/errors-reducer";
 import axios from "axios";
 import createSagaMiddleware from "redux-saga"
 import rootSaga from "./sagas";
@@ -35,7 +36,8 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     combineReducers({
             feed : twitterFeedReducer,
-            auth: authReducer
+            auth: authReducer,
+            errors: errorsReducer
         }),
     composeEnhancers(applyMiddleware(
         thunkMiddleware,
